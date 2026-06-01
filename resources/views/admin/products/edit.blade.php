@@ -5,6 +5,10 @@
     <h4 class="mb-sm-0">Edit Product: {{ $product->title }}</h4><div class="page-title-right"><ol class="breadcrumb m-0"><li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li><li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li><li class="breadcrumb-item active">Edit</li></ol></div>
 </div></div></div>
 @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+
+{{-- Hidden variant-add form (outside main form to avoid nesting) --}}
+<form id="variant-form" action="{{ route('admin.products.variants.store', $product) }}" method="POST" enctype="multipart/form-data">@csrf</form>
+
 <div class="row"><div class="col-12"><div class="card"><div class="card-body">
     <ul class="nav nav-tabs nav-justified mb-4" role="tablist">
         <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#basic">Basic Info</a></li>
@@ -39,6 +43,7 @@
                 </div>
                 <div class="mb-3"><label class="form-label">Short Description</label><textarea name="short_description" class="form-control" rows="2" maxlength="500">{{ old('short_description', $product->short_description) }}</textarea></div>
                 <div class="mb-3"><label class="form-label">Full Description</label><textarea name="full_description" class="form-control" rows="5">{{ old('full_description', $product->full_description) }}</textarea></div>
+                <div class="mb-3"><label class="form-label">Season Label</label><input type="text" name="season_label" class="form-control" value="{{ old('season_label', $product->season_label) }}" placeholder="e.g. All-season, Spring/Summer, Winter"></div>
             </div>
 
             {{-- Pricing & Tax --}}
@@ -88,7 +93,7 @@
                         <div class="col-md-2 col-4 mb-2">
                             <div class="position-relative">
                                 <img src="{{ asset('storage/'.$galleryImage) }}" style="width:100%;height:80px;object-fit:cover" class="rounded border">
-                                <a href="{{ route('admin.products.gallery.destroy', [$product, $gi]) }}" class="position-absolute top-0 end-0 btn btn-sm btn-danger rounded-circle p-0" style="width:20px;height:20px;font-size:12px;line-height:20px;text-align:center" onclick="return confirm('Remove this image?')">&times;</a>
+                                <button type="button" class="position-absolute top-0 end-0 btn btn-sm btn-danger rounded-circle p-0" style="width:20px;height:20px;font-size:12px;line-height:20px;text-align:center" onclick="if(confirm('Remove this image?')) document.getElementById('gallery-{{ $gi }}').submit();">&times;</button>
                             </div>
                         </div>
                         @endforeach
@@ -111,17 +116,18 @@
                 @if($product->variants->count())
                 <div class="table-responsive mb-4">
                     <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-light"><tr><th>Image</th><th>Color</th><th>SKU</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+                        <thead class="table-light"><tr><th>Image</th><th>Name</th><th>Color</th><th>SKU</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
                         <tbody>
                             @foreach($product->variants as $v)
                             <tr>
                                 <td>@if($v->image_url)<img src="{{ $v->image_url }}" style="width:40px;height:40px;object-fit:cover" class="rounded">@else<span class="badge bg-secondary">—</span>@endif</td>
+                                <td>{{ $v->name ?? '—' }}</td>
                                 <td>@if($v->color)<span class="badge" style="background:{{ $v->color->hex_code }}">{{ $v->color->name }}</span>@else—@endif</td>
                                 <td>{{ $v->sku ?? '—' }}</td>
                                 <td>{{ config('app.currency', 'Rs') }} {{ number_format($v->price ?? $product->regular_price, 2) }}</td>
                                 <td><span class="badge bg-{{ $v->stock > 0 ? 'info' : 'secondary' }}">{{ $v->stock ?? 0 }}</span></td>
                                 <td>
-                                    <form action="{{ route('admin.products.variants.destroy', [$product, $v]) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete variant?')">@csrf @method('DELETE')<button type="submit" class="btn btn-sm btn-soft-danger"><i class="ri-delete-bin-line"></i></button></form>
+                                    <button type="button" class="btn btn-sm btn-soft-danger" onclick="if(confirm('Delete variant?')) document.getElementById('delete-variant-{{ $v->id }}').submit();"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -135,6 +141,7 @@
                 <h6 class="fw-bold mb-3">Add Variant</h6>
                 <div class="border rounded p-3 bg-light">
                     <div class="row g-2 align-items-end">
+                        <div class="col-md-2"><input type="text" name="name" form="variant-form" class="form-control" placeholder="Name (e.g. Superior 80s)"></div>
                         <div class="col-md-2"><select name="color_id" form="variant-form" class="form-select"><option value="">Color</option>@foreach($colors as $col)<option value="{{ $col->id }}">{{ $col->name }}</option>@endforeach</select></div>
                         <div class="col-md-2"><input type="text" name="sku" form="variant-form" class="form-control" placeholder="SKU"></div>
                         <div class="col-md-2"><input type="number" step="0.01" name="price" form="variant-form" class="form-control" placeholder="Price"></div>
@@ -144,7 +151,6 @@
                         <div class="col-md-2"><button type="submit" form="variant-form" class="btn btn-success w-100"><i class="ri-add-line me-1"></i>Add</button></div>
                     </div>
                 </div>
-                <form id="variant-form" action="{{ route('admin.products.variants.store', $product) }}" method="POST" enctype="multipart/form-data">@csrf</form>
             </div>
 
             {{-- Attributes --}}
@@ -199,9 +205,21 @@
             </div>
             <div>
                 <a href="{{ route('admin.products.create') }}" class="btn btn-soft-primary"><i class="ri-add-line me-1"></i>New</a>
-                <form action="{{ route('admin.products.duplicate', $product) }}" method="POST" class="d-inline">@csrf<button type="submit" class="btn btn-soft-info"><i class="ri-file-copy-line me-1"></i>Duplicate</button></form>
+                <button type="button" class="btn btn-soft-info" onclick="document.getElementById('duplicate-product').submit();"><i class="ri-file-copy-line me-1"></i>Duplicate</button>
             </div>
         </div>
     </form>
+
+    {{-- Hidden forms for variant delete, gallery delete, and duplicate (outside main form) --}}
+    @foreach($product->variants as $v)
+    <form id="delete-variant-{{ $v->id }}" action="{{ route('admin.products.variants.destroy', [$product, $v]) }}" method="POST" class="d-none">@csrf @method('DELETE')</form>
+    @endforeach
+    @if($product->gallery_images)
+        @foreach($product->gallery_images as $gi => $galleryImage)
+        <form id="gallery-{{ $gi }}" action="{{ route('admin.products.gallery.destroy', [$product, $gi]) }}" method="POST" class="d-none">@csrf @method('DELETE')</form>
+        @endforeach
+    @endif
+    <form id="duplicate-product" action="{{ route('admin.products.duplicate', $product) }}" method="POST" class="d-none">@csrf</form>
+
 </div></div></div></div>
 @endsection

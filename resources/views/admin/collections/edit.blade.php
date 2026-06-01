@@ -11,13 +11,23 @@
         <div class="mb-3"><label class="form-label">Slug</label><input type="text" name="slug" class="form-control" value="{{ old('slug', $collection->slug) }}"></div>
         <div class="mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3">{{ old('description', $collection->description) }}</textarea></div>
         <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Image</label><input type="file" name="image" class="form-control" accept="image/*">
                 @if($collection->image_url)<div class="mt-1"><img src="{{ $collection->image_url }}" style="max-height:60px" class="rounded"></div>@endif
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Banner</label><input type="file" name="banner" class="form-control" accept="image/*">
                 @if($collection->banner_url)<div class="mt-1"><img src="{{ $collection->banner_url }}" style="max-height:60px" class="rounded"></div>@endif
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Banner Images (carousel)</label><input type="file" name="banner_images[]" class="form-control" accept="image/*" multiple>
+                @if($collection->banner_images_urls)
+                    <div class="mt-1 d-flex flex-wrap gap-1">
+                        @foreach($collection->banner_images_urls as $url)
+                            <img src="{{ $url }}" style="max-height:50px" class="rounded">
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
         <div class="row mb-3">

@@ -72,6 +72,20 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.orders.index') }}" class="waves-effect {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                        <i class="ri-shopping-cart-2-line"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.users.index') }}" class="waves-effect {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        <i class="ri-user-line"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript:void(0);" class="has-arrow waves-effect {{ request()->routeIs('admin.coupons.*') || request()->routeIs('admin.offers.*') ? 'active' : '' }}">
                         <i class="ri-percent-line"></i>
                         <span>Marketing</span>
@@ -110,11 +124,11 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('login') }}" class="waves-effect" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <a href="{{ route('admin.login') }}" class="waves-effect" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="ri-shut-down-line"></i>
                         <span>Logout</span>
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">@csrf</form>
                 </li>
             </ul>
         </div>

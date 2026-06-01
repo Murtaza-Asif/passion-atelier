@@ -173,73 +173,54 @@
                 <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
-                    <span class="noti-dot"></span>
+                    @php $unreadCount = Auth::user()->unreadNotifications->count(); @endphp
+                    @if($unreadCount > 0)
+                        <span class="badge bg-danger rounded-pill" style="position:absolute;top:8px;right:6px;font-size:9px;min-width:16px;height:16px;line-height:10px;">{{ $unreadCount > 9 ? '9+' : $unreadCount }}</span>
+                    @endif
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
                     <div class="p-3">
                         <div class="row align-items-center">
                             <div class="col"><h6 class="m-0">Notifications</h6></div>
-                            <div class="col-auto"><a href="#!" class="small">View All</a></div>
+                            @if($unreadCount > 0)
+                            <div class="col-auto">
+                                <form action="{{ route('admin.notifications.read-all') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-link text-decoration-none p-0">Mark all read</button>
+                                </form>
+                            </div>
+                            @endif
                         </div>
                     </div>
-                    <div data-simplebar style="max-height: 230px;">
-                        <a href="" class="text-reset notification-item">
+                    <div data-simplebar style="max-height: 300px;">
+                        @forelse(Auth::user()->notifications->take(10) as $notification)
+                        @php $data = $notification->data; @endphp
+                        <a href="{{ route('admin.notifications.read', $notification->id) }}" class="text-reset notification-item {{ $notification->read_at ? '' : 'bg-soft-primary' }}">
                             <div class="d-flex">
                                 <div class="avatar-xs me-3">
-                                    <span class="avatar-title bg-primary rounded-circle font-size-16"><i class="ri-shopping-cart-line"></i></span>
+                                    <span class="avatar-title bg-success rounded-circle font-size-16">
+                                        <i class="ri-user-add-line"></i>
+                                    </span>
                                 </div>
                                 <div class="flex-1">
-                                    <h6 class="mb-1">Your order is placed</h6>
+                                    <h6 class="mb-1">New User Registered</h6>
                                     <div class="font-size-12 text-muted">
-                                        <p class="mb-1">If several languages coalesce the grammar</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
+                                        <p class="mb-1"><a href="{{ route('admin.users.index', ['highlight' => $data['user_id']]) }}" class="text-reset fw-medium">{{ $data['user_name'] }}</a> joined PASSION</p>
+                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ $notification->created_at->diffForHumans() }}</p>
                                     </div>
                                 </div>
                             </div>
                         </a>
-                        <a href="" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <img src="{{ asset('assets/images/users/avatar-3.jpg') }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                <div class="flex-1">
-                                    <h6 class="mb-1">James Lemire</h6>
-                                    <div class="font-size-12 text-muted">
-                                        <p class="mb-1">It will seem like simplified English.</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="avatar-xs me-3">
-                                    <span class="avatar-title bg-success rounded-circle font-size-16"><i class="ri-checkbox-circle-line"></i></span>
-                                </div>
-                                <div class="flex-1">
-                                    <h6 class="mb-1">Your item is shipped</h6>
-                                    <div class="font-size-12 text-muted">
-                                        <p class="mb-1">If several languages coalesce the grammar</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <img src="{{ asset('assets/images/users/avatar-4.jpg') }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                <div class="flex-1">
-                                    <h6 class="mb-1">Salena Layfield</h6>
-                                    <div class="font-size-12 text-muted">
-                                        <p class="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                        @empty
+                        <div class="text-center text-muted py-4">
+                            <p class="mb-0 font-size-13">No notifications yet</p>
+                        </div>
+                        @endforelse
                     </div>
                     <div class="p-2 border-top">
                         <div class="d-grid">
-                            <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                <i class="mdi mdi-arrow-right-circle me-1"></i> View More..
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-link font-size-14 text-center">
+                                <i class="mdi mdi-arrow-right-circle me-1"></i> View All Users
                             </a>
                         </div>
                     </div>
@@ -256,7 +237,7 @@
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="ri-user-line align-middle me-1"></i> Profile</a>
                     <div class="dropdown-divider"></div>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="dropdown-item text-danger">
                             <i class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout

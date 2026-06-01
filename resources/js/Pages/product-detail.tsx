@@ -1,9 +1,10 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { Minus, Plus, ShoppingBag, ArrowRight, Check, Shield, Truck, RotateCcw, Heart, MessageCircle, Award, Scissors, Thermometer, Sparkles } from "lucide-react";
 import type { FrontendProduct } from "@/Lib/site";
 import { SITE } from "@/Lib/site";
 import { useCart } from "@/Lib/cart-context";
+import { useAuth } from "@/Lib/auth-context";
 import { cn } from "@/Lib/utils";
 import { Navbar } from "@/Layouts/navbar";
 import { Footer } from "@/Layouts/footer";
@@ -41,6 +42,8 @@ const BENEFITS = [
 
 export default function ServiceDetail({ slug, service }: ServicePageProps) {
   const { addItem } = useCart();
+  const { requireAuth } = useAuth();
+  const { auth } = usePage().props as { auth: { user: any } };
   const [selectedVar, setSelectedVar] = useState<any | null>(null);
   const [selectedColor, setSelectedColor] = useState<any | null>(null);
   const [qty, setQty] = useState(1);
@@ -76,14 +79,25 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
 
   const handleAddToCart = () => {
     if (!selectedVar || !selectedColor) return;
-    addItem(service, selectedVar, selectedColor, qty);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    if (auth.user) {
+      addItem(service, selectedVar, selectedColor, qty);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } else {
+      requireAuth(service, selectedVar, selectedColor, qty);
+    }
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
-    window.location.href = SITE.whatsappLink;
+    if (!selectedVar || !selectedColor) return;
+    if (auth.user) {
+      addItem(service, selectedVar, selectedColor, qty);
+      const link = document.createElement("a");
+      link.href = "/checkout";
+      link.click();
+    } else {
+      requireAuth(service, selectedVar, selectedColor, qty);
+    }
   };
 
   return (

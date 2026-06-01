@@ -14,11 +14,22 @@ import { StickyWhatsApp } from "@/Layouts/sticky-whatsapp";
 
 import type { FrontendProduct } from "@/Lib/site";
 
-interface HomePageProps {
-  services: FrontendProduct[];
+interface FrontendCollection {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  image_url: string | null;
+  banner_url: string | null;
+  banner_images: string[];
 }
 
-export default function Home({ services }: HomePageProps) {
+interface HomePageProps {
+  services: FrontendProduct[];
+  collections: FrontendCollection[];
+}
+
+export default function Home({ services, collections }: HomePageProps) {
     return (
         <ThemeProvider>
             <div className="min-h-screen bg-background text-foreground">
@@ -33,7 +44,7 @@ export default function Home({ services }: HomePageProps) {
 
                     <Hero />
                     <LogoMarquee />
-                    <ServicesSection services={services} />
+                    <ServicesSection services={services} collections={collections} />
                     <FabricAdvisor />
                     <FounderSection />
                     <Testimonials />

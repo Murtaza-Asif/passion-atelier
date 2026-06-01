@@ -5,17 +5,26 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { CartProvider } from './Lib/cart-context';
+import { AuthProvider, PendingCartRestorer } from './Lib/auth-context';
 import { CartDrawer } from './Layouts/cart-drawer';
+import { AuthModal } from './Components/AuthModal';
 import { useCart } from './Lib/cart-context';
+import { ErrorBoundary } from './Components/ErrorBoundary';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-function AppWithCart({ children }) {
+function AppShell({ children }) {
   return (
-    <CartProvider>
-      {children}
-      <CartGlobal />
-    </CartProvider>
+    <ErrorBoundary>
+      <CartProvider>
+        <AuthProvider>
+          {children}
+          <CartGlobal />
+          <AuthModal />
+          <PendingCartRestorer />
+        </AuthProvider>
+      </CartProvider>
+    </ErrorBoundary>
   );
 }
 
@@ -35,9 +44,9 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-          <AppWithCart>
+          <AppShell>
             <App {...props} />
-          </AppWithCart>
+          </AppShell>
         );
     },
     progress: {

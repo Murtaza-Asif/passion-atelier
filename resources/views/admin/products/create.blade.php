@@ -25,6 +25,7 @@
         </div>
         <div class="mb-3"><label class="form-label">Short Description</label><textarea name="short_description" class="form-control" rows="2" maxlength="500">{{ old('short_description') }}</textarea></div>
         <div class="mb-3"><label class="form-label">Full Description</label><textarea name="full_description" class="form-control" rows="5">{{ old('full_description') }}</textarea></div>
+        <div class="mb-3"><label class="form-label">Season Label</label><input type="text" name="season_label" class="form-control" value="{{ old('season_label') }}" placeholder="e.g. All-season, Spring/Summer, Winter"></div>
 
         <h5 class="mb-3 mt-4">Pricing & Tax</h5>
         <div class="row mb-3">

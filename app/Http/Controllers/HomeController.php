@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Product;
 use App\Services\Admin\CollectionService;
 use Inertia\Inertia;
@@ -18,9 +20,11 @@ class HomeController extends Controller
             ->get()
             ->map->toFrontendArray();
 
+        $collections = $this->collectionService->getAll()->map->toFrontendArray()->values();
+
         return Inertia::render('home', [
             'services' => $services,
-            'collections' => $this->collectionService->getAll(),
+            'collections' => $collections,
         ]);
     }
 }

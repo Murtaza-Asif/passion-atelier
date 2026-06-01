@@ -1,12 +1,19 @@
 <?php
+
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateProductRequest extends FormRequest {
-    public function authorize(): bool { return true; }
-    public function rules(): array {
+class UpdateProductRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
         return [
             'product_type_id' => ['nullable', 'integer', 'exists:product_types,id'],
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],
@@ -18,6 +25,7 @@ class UpdateProductRequest extends FormRequest {
             'barcode' => ['nullable', 'string', 'max:100'],
             'short_description' => ['nullable', 'string', 'max:500'],
             'full_description' => ['nullable', 'string'],
+            'season_label' => ['nullable', 'string', 'max:255'],
             'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'gallery_images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'video_url' => ['nullable', 'url', 'max:500'],

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Product;
 use Inertia\Inertia;
 
@@ -25,7 +27,7 @@ class ServiceController extends Controller
             ->where('status', 'published')
             ->first();
 
-        if (!$product) {
+        if (! $product) {
             return Inertia::render('product-detail', [
                 'slug' => $slug,
                 'service' => null,

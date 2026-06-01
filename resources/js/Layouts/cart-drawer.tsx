@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, MessageCircle } from "lucide-react";
+import { Link } from "@inertiajs/react";
 import { useCart } from "@/Lib/cart-context";
 import { SITE } from "@/Lib/site";
 import cotton from "@/assets/fabric-cotton.jpg";
@@ -141,11 +142,15 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">Shipping calculated at checkout</p>
+                <Link href="/checkout" className="btn-luxe mt-4 w-full bg-violet text-white">
+                  Checkout
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
                 <a
                   href={whatsappLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="btn-luxe mt-4 w-full bg-foreground text-background"
+                  className="btn-luxe mt-2 w-full bg-foreground text-background"
                 >
                   <MessageCircle className="h-4 w-4" />
                   Checkout via WhatsApp

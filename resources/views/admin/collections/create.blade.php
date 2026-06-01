@@ -11,8 +11,9 @@
         <div class="mb-3"><label class="form-label">Slug</label><input type="text" name="slug" class="form-control" value="{{ old('slug') }}" placeholder="Auto"></div>
         <div class="mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea></div>
         <div class="row mb-3">
-            <div class="col-md-6"><label class="form-label">Image</label><input type="file" name="image" class="form-control" accept="image/*"></div>
-            <div class="col-md-6"><label class="form-label">Banner</label><input type="file" name="banner" class="form-control" accept="image/*"></div>
+            <div class="col-md-4"><label class="form-label">Image</label><input type="file" name="image" class="form-control" accept="image/*"></div>
+            <div class="col-md-4"><label class="form-label">Banner</label><input type="file" name="banner" class="form-control" accept="image/*"></div>
+            <div class="col-md-4"><label class="form-label">Banner Images (carousel)</label><input type="file" name="banner_images[]" class="form-control" accept="image/*" multiple></div>
         </div>
         <div class="row mb-3">
             <div class="col-md-6"><label class="form-label">Meta Title</label><input type="text" name="meta_title" class="form-control" value="{{ old('meta_title') }}"></div>
