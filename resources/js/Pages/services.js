@@ -1,0 +1,10 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Head } from "@inertiajs/react";
+import { ProductGrid } from "@/Components/sections/product-grid";
+import { Navbar } from "@/Layouts/navbar";
+import { Footer } from "@/Layouts/footer";
+import { ThemeProvider } from "@/Layouts/theme-provider";
+import { StickyWhatsApp } from "@/Layouts/sticky-whatsapp";
+export default function Services({ services }) {
+    return (_jsx(ThemeProvider, { children: _jsxs("div", { className: "min-h-screen bg-background text-foreground", children: [_jsx(Navbar, {}), _jsxs("main", { className: "pt-20", children: [_jsxs(Head, { children: [_jsx("title", { children: "Shop Collections \u2014 PASSION" }), _jsx("meta", { name: "description", content: "Browse our complete collection of premium men's unstitched fabrics \u2014 Premium Cotton, Luxury Wash & Wear, Formal Latha, and Custom Selection." }), _jsx("meta", { property: "og:title", content: "Shop Collections \u2014 PASSION" }), _jsx("meta", { property: "og:description", content: "Four signature unstitched fabric collections, each engineered for a different way of wearing." })] }), _jsx("section", { className: "bg-gradient-soft pt-32 pb-12 md:pt-40", children: _jsxs("div", { className: "container-luxe", children: [_jsx("p", { className: "eyebrow", children: "The Shop" }), _jsxs("h1", { className: "mt-4 max-w-3xl font-display text-[clamp(2.4rem,5.5vw,4.6rem)] font-semibold leading-[1.02] tracking-tight", children: ["Four signatures, ", _jsx("span", { className: "text-gradient-brand", children: "one philosophy." })] }), _jsx("p", { className: "mt-5 max-w-2xl text-base text-muted-foreground md:text-lg", children: "Each collection is a study in restraint \u2014 refined materials, considered finishing, and detail you only notice when it's missing." })] }) }), _jsx("section", { className: "py-12 md:py-20", children: _jsx("div", { className: "container-luxe", children: _jsx(ProductGrid, { services: services }) }) })] }), _jsx(Footer, {}), _jsx(StickyWhatsApp, {})] }) }));
+}
