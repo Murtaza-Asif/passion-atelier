@@ -27,7 +27,7 @@ class ServiceSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(['email' => 'admin@passion.com'], [
+        User::firstOrCreate(['email' => 'admin@passionatelier.com'], [
             'name' => 'Admin',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
@@ -143,7 +143,7 @@ class ServiceSeeder extends Seeder
                 $noun = $fabricNouns[array_rand($fabricNouns)];
                 $weight = $fabricWeights[array_rand($fabricWeights)];
                 $title = "{$collection->name} {$adj} {$noun} {$weight}";
-                $slug = Str::slug($title) . '-' . Str::random(4);
+                $slug = Str::slug($title).'-'.Str::random(4);
                 $allSlugs[] = $slug;
                 $descKey = array_rand($descriptions);
                 $regularPrice = rand(25, 120) * 100; // 2500-12000
@@ -162,7 +162,7 @@ class ServiceSeeder extends Seeder
                     'slug' => $slug,
                     'featured_image' => null,
                     'short_description' => $descriptions[$descKey],
-                    'full_description' => $descriptions[$descKey] . ' From the ' . $collection->name . ', this ' . strtolower($adj) . ' ' . strtolower($noun) . ' offers exceptional quality and a refined finish suitable for any occasion.',
+                    'full_description' => $descriptions[$descKey].' From the '.$collection->name.', this '.strtolower($adj).' '.strtolower($noun).' offers exceptional quality and a refined finish suitable for any occasion.',
                     'season_label' => $season,
                     'regular_price' => $regularPrice,
                     'sale_price' => $salePrice,
@@ -183,16 +183,18 @@ class ServiceSeeder extends Seeder
 
                 // 3 variants per product
                 $vColors = array_rand(array_flip($colorNames), min(3, count($colorNames)));
-                if (!is_array($vColors)) $vColors = [$vColors];
-                $baseSku = strtoupper(Str::slug($collection->name, '_')) . '-' . str_pad((string)$p, 3, '0', STR_PAD_LEFT);
+                if (! is_array($vColors)) {
+                    $vColors = [$vColors];
+                }
+                $baseSku = strtoupper(Str::slug($collection->name, '_')).'-'.str_pad((string) $p, 3, '0', STR_PAD_LEFT);
                 for ($v = 0; $v < 3; $v++) {
                     $vPrice = $regularPrice + ($v * 500);
                     $vSale = $hasSale ? $vPrice - rand(1, 3) * 500 : null;
                     $variantsData[] = [
                         'product_slug' => $slug,
                         'color_name' => $vColors[$v % count($vColors)],
-                        'name' => $fabricAdjectives[array_rand($fabricAdjectives)] . ' ' . ($v + 1),
-                        'sku' => $baseSku . '-' . chr(65 + $v),
+                        'name' => $fabricAdjectives[array_rand($fabricAdjectives)].' '.($v + 1),
+                        'sku' => $baseSku.'-'.chr(65 + $v),
                         'price' => $vPrice,
                         'sale_price' => $vSale,
                         'stock' => max(5, intval($stock / 3)),
@@ -206,12 +208,22 @@ class ServiceSeeder extends Seeder
 
                 // tags
                 $assignedTags = [];
-                if ($p <= 5) $assignedTags[] = 'Best Seller';
-                if ($p <= 8) $assignedTags[] = 'New Arrival';
-                if ($p >= 48) $assignedTags[] = 'Limited Edition';
-                if ($p <= 3) $assignedTags[] = 'Premium';
-                if (rand(0, 10) > 8) $assignedTags[] = 'Eco Friendly';
-                if (!empty($assignedTags)) {
+                if ($p <= 5) {
+                    $assignedTags[] = 'Best Seller';
+                }
+                if ($p <= 8) {
+                    $assignedTags[] = 'New Arrival';
+                }
+                if ($p >= 48) {
+                    $assignedTags[] = 'Limited Edition';
+                }
+                if ($p <= 3) {
+                    $assignedTags[] = 'Premium';
+                }
+                if (rand(0, 10) > 8) {
+                    $assignedTags[] = 'Eco Friendly';
+                }
+                if (! empty($assignedTags)) {
                     $productTags[] = ['slug' => $slug, 'tags' => $assignedTags];
                 }
             }
@@ -231,7 +243,9 @@ class ServiceSeeder extends Seeder
         $variantInserts = [];
         foreach ($variantsData as $vd) {
             $product = $productModels[$vd['product_slug']] ?? null;
-            if (!$product) continue;
+            if (! $product) {
+                continue;
+            }
             $variantInserts[] = [
                 'product_id' => $product->id,
                 'color_id' => $colorsByName[$vd['color_name']] ?? null,
@@ -256,14 +270,16 @@ class ServiceSeeder extends Seeder
         $tagsByName = Tag::pluck('id', 'name');
         foreach ($productTags as $pt) {
             $product = $productModels[$pt['slug']] ?? null;
-            if (!$product) continue;
+            if (! $product) {
+                continue;
+            }
             $tagIds = [];
             foreach ($pt['tags'] as $tn) {
                 if ($id = $tagsByName[$tn] ?? null) {
                     $tagIds[] = $id;
                 }
             }
-            if (!empty($tagIds)) {
+            if (! empty($tagIds)) {
                 $product->tags()->sync($tagIds);
             }
         }
@@ -420,6 +436,6 @@ class ServiceSeeder extends Seeder
         }
 
         $this->command->info('Database seeded successfully!');
-        $this->command->warn('Admin login: admin@passion.com / password');
+        $this->command->warn('Admin login: admin@passionatelier.com / password');
     }
 }

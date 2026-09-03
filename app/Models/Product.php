@@ -134,23 +134,25 @@ class Product extends Model
 
     public function getFeaturedImageUrlAttribute(): ?string
     {
-        if (!$this->featured_image) {
+        if (! $this->featured_image) {
             return null;
         }
         if (str_starts_with($this->featured_image, 'http://') || str_starts_with($this->featured_image, 'https://')) {
             return $this->featured_image;
         }
+
         return asset('storage/'.$this->featured_image);
     }
 
     public function getOgImageUrlAttribute(): ?string
     {
-        if (!$this->og_image) {
+        if (! $this->og_image) {
             return null;
         }
         if (str_starts_with($this->og_image, 'http://') || str_starts_with($this->og_image, 'https://')) {
             return $this->og_image;
         }
+
         return asset('storage/'.$this->og_image);
     }
 

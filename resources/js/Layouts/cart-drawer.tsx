@@ -86,6 +86,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                         <img
                           src={imageMap[item.service.image]}
                           alt=""
+                          loading="lazy"
                           className="h-full w-full object-cover"
                         />
                       </div>

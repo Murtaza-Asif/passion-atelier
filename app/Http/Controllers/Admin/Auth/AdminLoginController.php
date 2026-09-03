@@ -7,9 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
 
 class AdminLoginController extends Controller
 {
@@ -33,7 +31,7 @@ class AdminLoginController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if ($user && !$user->is_admin) {
+        if ($user && ! $user->is_admin) {
             throw ValidationException::withMessages([
                 'email' => 'This account does not have admin access.',
             ]);

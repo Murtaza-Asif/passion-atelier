@@ -26,7 +26,7 @@ class CollectionController extends Controller
             ->where('slug', $slug)
             ->first();
 
-        if (!$collection) {
+        if (! $collection) {
             return Inertia::render('under-development', ['status' => 404])
                 ->toResponse(request())
                 ->setStatusCode(404);

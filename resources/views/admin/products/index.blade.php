@@ -39,6 +39,7 @@
                     </td>
                     <td>
                         <a href="{{ route('admin.products.edit', $p) }}" class="btn btn-sm btn-soft-primary"><i class="ri-pencil-line"></i></a>
+                        <button type="button" class="btn btn-sm btn-soft-success" title="QR Code" onclick="showQR('{{ url('/services/' . $p->slug) }}', '{{ addslashes($p->title) }}')"><i class="ri-qr-code-line"></i></button>
                         <form action="{{ route('admin.products.duplicate', $p) }}" method="POST" class="d-inline">@csrf<button type="submit" class="btn btn-sm btn-soft-info" title="Duplicate"><i class="ri-file-copy-line"></i></button></form>
                         <form action="{{ route('admin.products.destroy', $p) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete product permanently?')">@csrf @method('DELETE')<button type="submit" class="btn btn-sm btn-soft-danger"><i class="ri-delete-bin-line"></i></button></form>
                     </td>
@@ -49,4 +50,127 @@
     </div>
     <div class="mt-3">{{ $products->links() }}</div>
 </div></div></div></div>
+
+<!-- QR Code Modal -->
+<div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center p-4">
+                <div id="qrPreview" class="d-inline-block"></div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pt-0 pb-4">
+                <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="downloadQR()"><i class="ri-download-2-line me-1"></i>Download</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="printQR()"><i class="ri-printer-line me-1"></i>Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+var PA_QR = {
+    fg: '#2d1b69',
+    bg: '#ffffff',
+    size: 320,
+    dotScale: 0.42,
+    logoSize: 62,
+    logo: '{{ asset("assets/images/pa-logo2.png") }}'
+};
+
+function renderDotQR(url) {
+    var qr = qrcode(0, 'H');
+    qr.addData(url);
+    qr.make();
+    var mod = qr.getModuleCount();
+    var S = PA_QR.size;
+    var pad = 20;
+    var qrArea = S - pad * 2;
+    var cell = qrArea / mod;
+    var dot = cell * PA_QR.dotScale;
+
+    var c = document.createElement('canvas');
+    c.width = S;
+    c.height = S;
+    var ctx = c.getContext('2d');
+
+    ctx.fillStyle = PA_QR.bg;
+    ctx.fillRect(0, 0, S, S);
+
+    ctx.fillStyle = PA_QR.fg;
+    for (var r = 0; r < mod; r++) {
+        for (var col = 0; col < mod; col++) {
+            if (qr.isDark(r, col)) {
+                ctx.beginPath();
+                ctx.arc(pad + col * cell + cell / 2, pad + r * cell + cell / 2, dot, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+    }
+
+    return new Promise(function (res) {
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function () {
+            var lz = PA_QR.logoSize;
+            var cx = S / 2, cy = S / 2;
+
+            ctx.fillStyle = PA_QR.bg;
+            ctx.beginPath();
+            ctx.arc(cx, cy, lz / 2 + 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = PA_QR.fg;
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.arc(cx, cy, lz / 2 + 4, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, lz / 2, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(img, cx - lz / 2, cy - lz / 2, lz, lz);
+            ctx.restore();
+            res(c);
+        };
+        img.onerror = function () { res(c); };
+        img.src = PA_QR.logo;
+    });
+}
+
+async function showQR(url, title) {
+    var c = await renderDotQR(url);
+    c.id = 'qrCanvas';
+    c.style.width = '280px';
+    c.style.height = '280px';
+    c.style.borderRadius = '12px';
+    var box = document.getElementById('qrPreview');
+    box.innerHTML = '';
+    box.appendChild(c);
+    new bootstrap.Modal(document.getElementById('qrModal')).show();
+}
+
+function downloadQR() {
+    var c = document.getElementById('qrCanvas');
+    if (!c) return;
+    var a = document.createElement('a');
+    a.download = 'qr-code.png';
+    a.href = c.toDataURL('image/png');
+    a.click();
+}
+
+function printQR() {
+    var c = document.getElementById('qrCanvas');
+    if (!c) return;
+    var d = c.toDataURL('image/png');
+    var w = window.open('', '_blank', 'width=420,height=480');
+    w.document.write('<!DOCTYPE html><html><head><title>QR Code</title>' +
+        '<style>@page{margin:20mm}body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh}img{width:300px}</style></head>' +
+        '<body><img src="' + d + '" onload="setTimeout(function(){window.print();window.close()},300)"></body></html>');
+    w.document.close();
+}
+</script>
+@endpush

@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Collection;
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\Color;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

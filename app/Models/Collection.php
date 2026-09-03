@@ -44,10 +44,13 @@ class Collection extends Model
 
     private function resolveUrl(?string $path): ?string
     {
-        if (!$path) return null;
+        if (! $path) {
+            return null;
+        }
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
         }
+
         return asset('storage/'.$path);
     }
 
