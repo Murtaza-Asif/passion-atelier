@@ -44,8 +44,8 @@ export default function OrderConfirmation({ order }: Props) {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
-          <Head title="Order Confirmed — PASSION" />
+        <main className="pt-16">
+          <Head title="PASSION — Order Confirmed" />
 
           <section className="py-16 md:py-24">
             <div className="container-luxe max-w-2xl text-center">

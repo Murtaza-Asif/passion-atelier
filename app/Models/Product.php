@@ -20,7 +20,7 @@ class Product extends Model
         'cost_price', 'regular_price', 'sale_price', 'discount_percent', 'discount_amount',
         'tax_type', 'tax_value', 'unit', 'min_order_qty', 'max_order_qty',
         'is_featured', 'is_new_arrival', 'is_best_seller', 'is_trending',
-        'status', 'published_at',
+        'in_stock', 'status', 'published_at',
         'meta_title', 'meta_description', 'meta_keywords', 'og_image',
         'sort_order', 'total_stock', 'total_sold', 'avg_rating', 'review_count',
     ];
@@ -33,6 +33,7 @@ class Product extends Model
             'is_new_arrival' => 'boolean',
             'is_best_seller' => 'boolean',
             'is_trending' => 'boolean',
+            'in_stock' => 'boolean',
             'cost_price' => 'decimal:2',
             'regular_price' => 'decimal:2',
             'sale_price' => 'decimal:2',
@@ -184,8 +185,14 @@ class Product extends Model
                 'id' => $v->id,
                 'name' => $v->name ?? $v->color?->name ?? 'Default',
                 'description' => '',
-                'price' => (float) ($v->sale_price ?? $v->price),
-                'original_price' => $v->sale_price && $v->sale_price < $v->price ? (float) $v->price : null,
+                'price' => (float) ($this->resolveSellingPrice($v)),
+                'original_price' => $this->resolveOriginalPrice($v),
+                'image_url' => $v->image_url,
+                'color' => $v->color ? [
+                    'id' => $v->color->id,
+                    'name' => $v->color->name,
+                    'hex_code' => $v->color->hex_code,
+                ] : null,
             ])
             : [];
 
@@ -198,6 +205,7 @@ class Product extends Model
                     'id' => $v->color->id,
                     'name' => $v->color->name,
                     'hex_code' => $v->color->hex_code,
+                    'image_url' => $v->image_url,
                 ])
             : [];
 
@@ -210,6 +218,7 @@ class Product extends Model
             'featured_image_url' => $this->featured_image_url,
             'image_key' => $this->image_key,
             'season' => $this->getSeason(),
+            'in_stock' => $this->in_stock,
             'regular_price' => (float) $this->regular_price,
             'sale_price' => (float) $this->sale_price,
             'has_discount' => $this->sale_price && $this->regular_price && $this->sale_price < $this->regular_price,
@@ -218,6 +227,42 @@ class Product extends Model
             'variations' => $variants,
             'colors' => $colors,
         ];
+    }
+
+    private function resolveSellingPrice($v): float
+    {
+        $hasSale = ! is_null($v->sale_price);
+        $hasPrice = ! is_null($v->price);
+
+        if ($hasSale && $hasPrice && $v->sale_price > $v->price) {
+            return (float) $v->price;
+        }
+        if ($hasSale) {
+            return (float) $v->sale_price;
+        }
+        if ($hasPrice) {
+            return (float) $v->price;
+        }
+
+        return (float) ($this->sale_price ?? $this->regular_price ?? 0);
+    }
+
+    private function resolveOriginalPrice($v): ?float
+    {
+        $hasSale = ! is_null($v->sale_price);
+        $hasPrice = ! is_null($v->price);
+
+        if ($hasSale && $hasPrice && $v->sale_price > $v->price) {
+            $high = (float) $v->sale_price;
+        } elseif ($hasPrice) {
+            $high = (float) $v->price;
+        } else {
+            $high = ! is_null($this->regular_price) ? (float) $this->regular_price : null;
+        }
+
+        $low = $this->resolveSellingPrice($v);
+
+        return $high && $high > $low ? $high : null;
     }
 
     private function getSeason(): string

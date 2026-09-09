@@ -4,9 +4,9 @@ import { SITE } from "@/Lib/site";
 
 export function Footer() {
   return (
-    <footer className="relative mt-32 border-t border-border/60 bg-gradient-soft">
-      <div className="container-luxe py-20">
-        <div className="grid gap-12 lg:grid-cols-12">
+    <footer className="relative mt-20 border-t border-border/60 bg-gradient-soft sm:mt-32">
+      <div className="container-luxe px-4 sm:px-6 py-12 sm:py-20">
+        <div className="grid gap-10 sm:gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Link href="/" className="flex items-center gap-2">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand text-xs font-bold text-white">
@@ -59,7 +59,7 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <p className="eyebrow mb-4">Boutiques</p>
+              <p className="eyebrow mb-4">Outlets</p>
               <ul className="space-y-4 text-sm">
                 {SITE.locations.map((l) => (
                   <li key={l.city} className="flex gap-2 text-foreground/70">
@@ -75,10 +75,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="hairline my-10" />
+        <div className="hairline my-8 sm:my-10" />
 
         <div className="flex flex-col items-start justify-between gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} {SITE.brand}. Crafted in Lahore. Worn worldwide.</p>
+          <p>© {new Date().getFullYear()} {SITE.brand}. Crafted in Karachi. Worn worldwide.</p>
           <p>Founded by {SITE.founder}</p>
         </div>
       </div>

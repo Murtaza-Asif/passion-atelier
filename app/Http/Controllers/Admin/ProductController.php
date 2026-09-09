@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\StoreVariantRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Http\Requests\Admin\UpdateVariantRequest;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\Admin\AttributeService;
@@ -122,6 +123,21 @@ class ProductController extends Controller
         return redirect()->route('admin.products.edit', $product)->with('success', 'Variant added.');
     }
 
+    public function updateVariant(UpdateVariantRequest $request, Product $product, ProductVariant $variant)
+    {
+        $data = $request->validated();
+        if ($request->hasFile('image')) {
+            if ($variant->image) {
+                Storage::disk('public')->delete($variant->image);
+            }
+            $data['image'] = $request->file('image')->store('variants', 'public');
+        }
+        $variant->update($data);
+        $product->update(['total_stock' => $product->variants()->sum('stock')]);
+
+        return redirect()->route('admin.products.edit', $product)->with('success', 'Variant updated.');
+    }
+
     public function destroyVariant(Product $product, ProductVariant $variant)
     {
         if ($variant->image) {
@@ -143,5 +159,12 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products.edit', $product)->with('success', 'Gallery image removed.');
+    }
+
+    public function toggleStock(Product $product)
+    {
+        $product->update(['in_stock' => ! $product->in_stock]);
+
+        return back()->with('success', $product->in_stock ? 'Product marked as in stock.' : 'Product marked as out of stock.');
     }
 }

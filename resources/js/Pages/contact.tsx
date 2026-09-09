@@ -12,14 +12,14 @@ export default function Contact() {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-16">
           <Head>
-            <title>Contact — PASSION</title>
-            <meta name="description" content="Speak to a master fabric advisor — by WhatsApp, email, or in-person at our Lahore and Silicon Valley ateliers." />
-            <meta property="og:title" content="Contact — PASSION" />
-            <meta property="og:description" content="Two ateliers, one standard. Reach a master fabric advisor." />
+            <title>PASSION — Contact</title>
+            <meta name="description" content="Speak to a fabric advisor — by WhatsApp, email, or in-person at our Karachi outlet." />
+            <meta property="og:title" content="PASSION — Contact" />
+            <meta property="og:description" content="Two outlets, one standard. Reach a master fabric advisor." />
           </Head>
-      <section className="bg-gradient-soft pt-32 pb-12 md:pt-40">
+      <section className="bg-gradient-soft pt-32 pb-12 md:pt-16">
         <div className="container-luxe max-w-3xl">
           <p className="eyebrow">Contact</p>
           <h1 className="mt-4 font-display text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.05] tracking-tight">
@@ -30,9 +30,9 @@ export default function Contact() {
           </p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            <ContactCard icon={MessageCircle} label="WhatsApp" value="+92 323 2032700" href={SITE.whatsappLink} />
+            <ContactCard icon={MessageCircle} label="WhatsApp" value="+92 321 2047973" href={SITE.whatsappLink} />
             <ContactCard icon={Mail} label="Email" value={SITE.email} href={`mailto:${SITE.email}`} />
-            <ContactCard icon={Phone} label="Studio" value="+92 323 2032700" href={`tel:+${SITE.whatsapp}`} />
+            <ContactCard icon={Phone} label="Studio" value="+92 321 2047973" href="tel:+923212047973" />
           </div>
         </div>
       </section>

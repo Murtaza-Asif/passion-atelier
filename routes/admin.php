@@ -46,8 +46,10 @@ Route::middleware(['admin', 'verified'])->prefix('admin')->name('admin.')->group
     Route::delete('attributes/{attribute}/values/{value}', [AttributeController::class, 'destroyValue'])->name('attributes.values.destroy');
 
     Route::resource('products', ProductController::class)->except('show');
+    Route::patch('products/{product}/toggle-stock', [ProductController::class, 'toggleStock'])->name('products.toggle-stock');
     Route::post('products/{product}/duplicate', [ProductController::class, 'duplicate'])->name('products.duplicate');
     Route::post('products/{product}/variants', [ProductController::class, 'storeVariant'])->name('products.variants.store');
+    Route::put('products/{product}/variants/{variant}', [ProductController::class, 'updateVariant'])->name('products.variants.update');
     Route::delete('products/{product}/variants/{variant}', [ProductController::class, 'destroyVariant'])->name('products.variants.destroy');
     Route::delete('products/{product}/gallery/{index}', [ProductController::class, 'removeGalleryImage'])->name('products.gallery.destroy');
 

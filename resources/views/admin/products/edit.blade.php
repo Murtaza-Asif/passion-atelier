@@ -116,7 +116,7 @@
                 @if($product->variants->count())
                 <div class="table-responsive mb-4">
                     <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-light"><tr><th>Image</th><th>Name</th><th>Color</th><th>SKU</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+                        <thead class="table-light"><tr><th>Image</th><th>Name</th><th>Color</th><th>SKU</th><th>Pricing</th><th>Stock</th><th>Actions</th></tr></thead>
                         <tbody>
                             @foreach($product->variants as $v)
                             <tr>
@@ -124,9 +124,20 @@
                                 <td>{{ $v->name ?? '—' }}</td>
                                 <td>@if($v->color)<span class="badge" style="background:{{ $v->color->hex_code }}">{{ $v->color->name }}</span>@else—@endif</td>
                                 <td>{{ $v->sku ?? '—' }}</td>
-                                <td>{{ config('app.currency', 'Rs') }} {{ number_format($v->price ?? $product->regular_price, 2) }}</td>
+                                <td>
+                                    @if($v->sale_price && $v->price && $v->sale_price > $v->price)
+                                        <span class="text-success fw-bold">{{ config('app.currency', 'Rs') }} {{ number_format($v->price, 2) }}</span>
+                                        <br><del class="text-muted small">{{ config('app.currency', 'Rs') }} {{ number_format($v->sale_price, 2) }}</del>
+                                    @elseif($v->sale_price && $v->sale_price <= ($v->price ?? PHP_INT_MAX))
+                                        <span class="text-success fw-bold">{{ config('app.currency', 'Rs') }} {{ number_format($v->sale_price, 2) }}</span>
+                                        @if($v->price)<br><del class="text-muted small">{{ config('app.currency', 'Rs') }} {{ number_format($v->price, 2) }}</del>@endif
+                                    @else
+                                        {{ config('app.currency', 'Rs') }} {{ number_format($v->price ?? $product->regular_price, 2) }}
+                                    @endif
+                                </td>
                                 <td><span class="badge bg-{{ $v->stock > 0 ? 'info' : 'secondary' }}">{{ $v->stock ?? 0 }}</span></td>
                                 <td>
+                                    <button type="button" class="btn btn-sm btn-soft-primary me-1" data-bs-toggle="modal" data-bs-target="#editVariant{{ $v->id }}"><i class="ri-edit-line"></i></button>
                                     <button type="button" class="btn btn-sm btn-soft-danger" onclick="if(confirm('Delete variant?')) document.getElementById('delete-variant-{{ $v->id }}').submit();"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
@@ -144,7 +155,8 @@
                         <div class="col-md-2"><input type="text" name="name" form="variant-form" class="form-control" placeholder="Name (e.g. Superior 80s)"></div>
                         <div class="col-md-2"><select name="color_id" form="variant-form" class="form-select"><option value="">Color</option>@foreach($colors as $col)<option value="{{ $col->id }}">{{ $col->name }}</option>@endforeach</select></div>
                         <div class="col-md-2"><input type="text" name="sku" form="variant-form" class="form-control" placeholder="SKU"></div>
-                        <div class="col-md-2"><input type="number" step="0.01" name="price" form="variant-form" class="form-control" placeholder="Price"></div>
+                        <div class="col-md-2"><input type="number" step="0.01" name="price" form="variant-form" class="form-control" placeholder="Price (Original)"></div>
+                        <div class="col-md-2"><input type="number" step="0.01" name="sale_price" form="variant-form" class="form-control" placeholder="Sale Price (Discounted)"></div>
                         <div class="col-md-1"><input type="number" name="stock" form="variant-form" class="form-control" placeholder="Stock" value="0"></div>
                         <div class="col-md-2"><input type="file" name="image" form="variant-form" class="form-control form-control-sm" accept="image/*"></div>
                         <div class="col-md-1"><input type="number" name="sort_order" form="variant-form" class="form-control" placeholder="Sort" value="0"></div>
@@ -220,6 +232,80 @@
         @endforeach
     @endif
     <form id="duplicate-product" action="{{ route('admin.products.duplicate', $product) }}" method="POST" class="d-none">@csrf</form>
+
+    {{-- Edit Variant Modals --}}
+    @foreach($product->variants as $v)
+    <div class="modal fade" id="editVariant{{ $v->id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('admin.products.variants.update', [$product, $v]) }}" method="POST" enctype="multipart/form-data">
+                    @csrf @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Variant: {{ $v->name ?? $v->color?->name ?? 'Variant #' . $v->id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" value="{{ $v->name }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Color</label>
+                                <select name="color_id" class="form-select">
+                                    <option value="">—</option>
+                                    @foreach($colors as $col)
+                                    <option value="{{ $col->id }}" {{ $v->color_id == $col->id ? 'selected' : '' }}>{{ $col->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">SKU</label>
+                                <input type="text" name="sku" class="form-control" value="{{ $v->sku }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Image</label>
+                                <input type="file" name="image" class="form-control" accept="image/*">
+                                @if($v->image_url)<div class="mt-1"><img src="{{ $v->image_url }}" style="height:40px" class="rounded border"></div>@endif
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Price (Original)</label>
+                                <input type="number" step="0.01" name="price" class="form-control" value="{{ $v->price }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Sale Price</label>
+                                <input type="number" step="0.01" name="sale_price" class="form-control" value="{{ $v->sale_price }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Stock</label>
+                                <input type="number" name="stock" class="form-control" value="{{ $v->stock }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Sort Order</label>
+                                <input type="number" name="sort_order" class="form-control" value="{{ $v->sort_order }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Low Stock Alert</label>
+                                <input type="number" name="low_stock_alert" class="form-control" value="{{ $v->low_stock_alert }}">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input type="hidden" name="is_default" value="0">
+                                    <input type="checkbox" name="is_default" class="form-check-input" value="1" {{ $v->is_default ? 'checked' : '' }}>
+                                    <label class="form-check-label">Default Variant</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="ri-save-line me-1"></i>Update Variant</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endforeach
 
 </div></div></div></div>
 @endsection

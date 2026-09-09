@@ -1,6 +1,6 @@
 import { Head, Link, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
-import { Minus, Plus, ShoppingBag, ArrowRight, Check, Shield, Truck, RotateCcw, Heart, MessageCircle, Award, Scissors, Thermometer, Sparkles } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ArrowRight, Check, Shield, Truck, RotateCcw, Heart, MessageCircle, Award, Scissors, Thermometer, Sparkles, Lock } from "lucide-react";
 import type { FrontendProduct } from "@/Lib/site";
 import { SITE } from "@/Lib/site";
 import { useCart } from "@/Lib/cart-context";
@@ -52,8 +52,9 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
 
   useEffect(() => {
     if (service) {
-      setSelectedVar(service.variations?.[0] ?? null);
-      setSelectedColor(service.colors?.[0] ?? null);
+      const firstVar = service.variations?.[0] ?? null;
+      setSelectedVar(firstVar);
+      setSelectedColor(firstVar?.color ?? null);
       setQty(1);
       setAdded(false);
       setActiveImg(0);
@@ -73,8 +74,12 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
     );
   }
 
-  const img = service.featured_image_url ?? imageMap[service.image_key ?? 'cotton'] ?? cotton;
+  const fallbackImg = service.featured_image_url ?? imageMap[service.image_key ?? 'cotton'] ?? cotton;
+  const img = selectedVar?.image_url ?? fallbackImg;
   const hasDiscount = selectedVar?.original_price != null && Number(selectedVar.original_price) > Number(selectedVar.price);
+
+  const thumbnails = service.variations?.filter((v: any) => v.image_url) ?? [];
+  const uniqueThumbnails = thumbnails.length > 0 ? thumbnails : service.variations?.map((v: any) => ({ ...v, image_url: fallbackImg })) ?? [];
   const relatedServices = [];
 
   const handleAddToCart = () => {
@@ -102,111 +107,151 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <Navbar />
-        <main className="pt-20">
-          <Head title={`${service.name} — PASSION`}>
+        <main className="pt-14 sm:pt-16">
+          <Head title={`PASSION — ${service.name}`}>
             <meta name="description" content={service.long_description ?? ""} />
-            <meta property="og:title" content={`${service.name} — PASSION`} />
+            <meta property="og:title" content={`PASSION — ${service.name}`} />
             <meta property="og:description" content={service.long_description ?? ""} />
           </Head>
 
+          {/* Breadcrumb */}
           <section className="border-b border-border/60 bg-secondary/30">
-            <div className="container-luxe flex items-center gap-2 py-3 text-xs text-muted-foreground">
+            <div className="container-luxe flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-2.5 sm:py-3 text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
               <Link href="/" className="hover:text-foreground">Home</Link>
               <span>/</span>
               <Link href="/services" className="hover:text-foreground">Shop</Link>
               <span>/</span>
-              <span className="text-foreground">{service.name}</span>
+              <span className="text-foreground truncate">{service.name}</span>
             </div>
           </section>
 
-          <section className="py-10 md:py-16">
+          {/* Product Section */}
+          <section className="py-6 sm:py-8 md:py-12 lg:py-16">
             <div className="container-luxe">
-              <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+              <div className="grid gap-6 lg:grid-cols-12 lg:gap-10 xl:gap-16">
+
+                {/* LEFT — Images */}
                 <div className="lg:col-span-6">
-                  <div className="relative overflow-hidden rounded-2xl border border-border/70 shadow-card">
+                  {/* Main Image */}
+                  <div className="relative overflow-hidden rounded-xl border border-border/70 shadow-card">
                     <div className="aspect-[4/5]">
                       <img src={img} alt={service.name} className="h-full w-full object-cover transition-all duration-700" />
                     </div>
+                    {service.in_stock === false && (
+                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/30 bg-white/10">
+                          <Lock className="h-7 w-7 text-white" />
+                        </div>
+                        <p className="mt-3 text-base font-semibold uppercase tracking-widest text-white">Out of Stock</p>
+                        <p className="mt-1 text-xs text-white/70">Coming back soon, Inshallah</p>
+                      </div>
+                    )}
                     {hasDiscount && (
-                      <span className="absolute left-4 top-4 rounded-full bg-destructive px-3 py-1 text-xs font-bold text-destructive-foreground">
+                      <span className="absolute left-3 top-3 rounded-full bg-destructive px-2.5 py-1 text-[10px] sm:text-xs font-bold text-destructive-foreground">
                         -{Math.round(((Number(selectedVar!.original_price) - Number(selectedVar!.price)) / Number(selectedVar!.original_price)) * 100)}%
                       </span>
                     )}
-                    <button aria-label="Add to wishlist" className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/60 backdrop-blur transition-colors hover:bg-background hover:text-foreground">
-                      <Heart className="h-4 w-4" />
+                    <button aria-label="Add to wishlist" className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/60 backdrop-blur transition-colors hover:bg-background hover:text-foreground">
+                      <Heart className="h-3.5 w-3.5" />
                     </button>
                   </div>
-                  <div className="mt-4 flex gap-3">
-                    {[0, 1, 2, 3].map((i) => (
-                      <button key={i} onClick={() => setActiveImg(i)} className={cn("aspect-[4/5] w-20 overflow-hidden rounded-xl border-2 transition-all", activeImg === i ? "border-violet" : "border-border/60 opacity-60 hover:opacity-100")}>
-                        <img src={img} alt="" className="h-full w-full object-cover" />
+
+                  {/* Thumbnails */}
+                  <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    {uniqueThumbnails.map((v: any, i: number) => (
+                      <button key={v.id} onClick={() => { setSelectedVar(v); if (v.color) setSelectedColor(v.color); setAdded(false); setActiveImg(i); }} className={cn("aspect-[4/5] w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:w-20", selectedVar?.id === v.id ? "border-violet" : "border-border/60 opacity-60 hover:opacity-100")}>
+                        <img src={v.image_url ?? fallbackImg} alt={v.name ?? ''} className="h-full w-full object-cover" />
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="lg:col-span-6">
+                {/* RIGHT — Details */}
+                <div className="lg:col-span-6 lg:pt-0">
                   <p className="eyebrow">{service.season}</p>
-                  <h1 className="mt-3 font-display text-[clamp(1.8rem,3.5vw,3rem)] font-semibold leading-tight tracking-tight">{service.name}</h1>
-                  <p className="mt-3 text-base leading-relaxed text-muted-foreground">{service.long_description}</p>
+                  <h1 className="mt-2 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl md:text-[clamp(1.5rem,3vw,2.75rem)]">{service.name}</h1>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">{service.long_description}</p>
 
-                  <div className="mt-6 flex items-baseline gap-3">
+                  {/* Price */}
+                  <div className="mt-4 flex items-baseline gap-3 md:mt-6">
                     {selectedVar && (
                       <>
-                        <span className="font-display text-3xl font-semibold text-foreground">{formatPrice(Number(selectedVar.price))}</span>
-                        {hasDiscount && <span className="font-display text-lg text-muted-foreground line-through">{formatPrice(Number(selectedVar.original_price))}</span>}
+                        <span className="font-display text-2xl font-semibold text-foreground md:text-3xl">{formatPrice(Number(selectedVar.price))}</span>
+                        {hasDiscount && <span className="font-display text-sm text-muted-foreground line-through md:text-lg">{formatPrice(Number(selectedVar.original_price))}</span>}
                       </>
                     )}
                   </div>
-                  <p className="mt-1 text-xs text-muted-foreground">Inclusive of all taxes. Fabric per metre.</p>
+                  <p className="mt-1 text-[10px] text-muted-foreground sm:text-xs">Inclusive of all taxes. Fabric per metre.</p>
 
-                  <div className="mt-8">
-                    <p className="text-sm font-medium text-foreground">Grade</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                  {/* Grade */}
+                  <div className="mt-5 sm:mt-6 md:mt-8">
+                    <p className="text-xs font-medium text-foreground sm:text-sm">Grade</p>
+                    <div className="mt-2.5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-2 sm:overflow-visible">
                       {service.variations?.map((v: any) => (
-                        <button key={v.id} onClick={() => { setSelectedVar(v); setAdded(false); }} className={cn("rounded-xl border px-4 py-3 text-left transition-all", selectedVar?.id === v.id ? "border-violet bg-violet/5 ring-1 ring-violet/30" : "border-border/70 bg-card hover:border-foreground/30")}>
-                          <p className="text-sm font-semibold">{v.name}</p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">{v.description}</p>
-                          <p className="mt-1 text-sm font-semibold text-violet">{formatPrice(Number(v.price))}</p>
+                        <button key={v.id} onClick={() => { setSelectedVar(v); if (v.color) setSelectedColor(v.color); setAdded(false); }} className={cn("rounded-xl border px-3 py-3 text-left transition-all sm:min-w-0 sm:shrink sm:flex-1 sm:max-w-[180px]", selectedVar?.id === v.id ? "border-violet bg-violet/5 ring-1 ring-violet/30" : "border-border/70 bg-card hover:border-foreground/30")}>
+                          <p className="text-xs font-semibold sm:text-sm">{v.name}</p>
+                          <p className="mt-0.5 text-[10px] text-muted-foreground sm:text-xs">{v.description}</p>
+                          <p className="mt-1 text-xs font-semibold text-violet sm:text-sm">{formatPrice(Number(v.price))}</p>
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-8">
+                  {/* Color */}
+                  <div className="mt-5 sm:mt-6 md:mt-8">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-foreground">Color</p>
-                      {selectedColor && <span className="text-xs text-muted-foreground">{selectedColor.name}</span>}
+                      <p className="text-xs font-medium text-foreground sm:text-sm">Color</p>
+                      {selectedColor && <span className="text-[10px] text-muted-foreground sm:text-xs">{selectedColor.name}</span>}
                     </div>
-                    <div className="mt-2 flex flex-wrap gap-2.5">
+                    <div className="mt-2.5 flex flex-wrap gap-2.5">
                       {service.colors?.map((c: any) => (
-                        <button key={c.name} onClick={() => { setSelectedColor(c); setAdded(false); }} title={c.name} className={cn("h-9 w-9 rounded-full border-2 transition-all", selectedColor?.name === c.name ? "border-violet scale-110 shadow-md" : "border-border/60 hover:border-foreground/40")} style={{ backgroundColor: c.hex_code ?? "#ccc" }} />
+                        <button key={c.name} onClick={() => { setSelectedColor(c); const matchingVar = service.variations?.find((v: any) => v.color?.id === c.id); if (matchingVar) setSelectedVar(matchingVar); setAdded(false); }} title={c.name} className={cn("h-9 w-9 rounded-full border-2 transition-all sm:h-10 sm:w-10", selectedColor?.name === c.name ? "border-violet scale-110 shadow-md" : "border-border/60 hover:border-foreground/40")} style={{ backgroundColor: c.hex_code ?? "#ccc" }} />
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <div className="flex items-center rounded-xl border border-border/70">
-                      <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="flex h-11 w-11 items-center justify-center text-foreground/60 transition-colors hover:text-foreground"><Minus className="h-4 w-4" /></button>
-                      <span className="flex h-11 w-14 items-center justify-center text-sm font-semibold tabular-nums">{qty}</span>
-                      <button onClick={() => setQty((q) => Math.min(99, q + 1))} className="flex h-11 w-11 items-center justify-center text-foreground/60 transition-colors hover:text-foreground"><Plus className="h-4 w-4" /></button>
-                    </div>
-                    <div className="flex flex-1 gap-2">
-                      <button onClick={handleAddToCart} className={cn("btn-luxe flex-1 transition-all", added ? "bg-emerald-600 text-white" : "bg-foreground text-background")}>
-                        {added ? <><Check className="h-4 w-4" /> Added</> : <><ShoppingBag className="h-4 w-4" /> Add to Cart</>}
-                      </button>
-                      <button onClick={handleBuyNow} className="btn-luxe border border-violet bg-violet text-white hover:opacity-90">Buy Now</button>
-                    </div>
+                  {/* Actions */}
+                  <div className="mt-5 sm:mt-6 md:mt-8">
+                    {service.in_stock === false ? (
+                      <div className="flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-secondary/50 py-3.5">
+                        <Lock className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm font-medium text-muted-foreground">This product is currently out of stock</span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-3">
+                        <div className="hidden sm:flex items-center gap-3">
+                          <div className="flex items-center rounded-xl border border-border/70">
+                            <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="flex h-11 w-11 items-center justify-center text-foreground/60 transition-colors hover:text-foreground"><Minus className="h-4 w-4" /></button>
+                            <span className="flex h-11 w-12 items-center justify-center text-sm font-semibold tabular-nums">{qty}</span>
+                            <button onClick={() => setQty((q) => Math.min(99, q + 1))} className="flex h-11 w-11 items-center justify-center text-foreground/60 transition-colors hover:text-foreground"><Plus className="h-4 w-4" /></button>
+                          </div>
+                          <button onClick={handleAddToCart} className={cn("btn-luxe flex-1 transition-all", added ? "bg-emerald-600 text-white" : "bg-foreground text-background")}>
+                            {added ? <><Check className="h-4 w-4" /> Added</> : <><ShoppingBag className="h-4 w-4" /> Add to Cart</>}
+                          </button>
+                          <button onClick={handleBuyNow} className="btn-luxe border border-violet bg-violet text-white hover:opacity-90">Buy Now</button>
+                        </div>
+                        <div className="flex sm:hidden items-center rounded-xl border border-border/70 self-stretch">
+                          <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="flex h-11 w-11 items-center justify-center text-foreground/60 transition-colors hover:text-foreground"><Minus className="h-4 w-4" /></button>
+                          <span className="flex h-11 flex-1 items-center justify-center text-sm font-semibold tabular-nums">{qty}</span>
+                          <button onClick={() => setQty((q) => Math.min(99, q + 1))} className="flex h-11 w-11 items-center justify-center text-foreground/60 transition-colors hover:text-foreground"><Plus className="h-4 w-4" /></button>
+                        </div>
+                        <button onClick={handleAddToCart} className={cn("btn-luxe sm:hidden transition-all w-full", added ? "bg-emerald-600 text-white" : "bg-foreground text-background")}>
+                          {added ? <><Check className="h-4 w-4" /> Added</> : <><ShoppingBag className="h-4 w-4" /> Add to Cart</>}
+                        </button>
+                        <button onClick={handleBuyNow} className="btn-luxe sm:hidden border border-violet bg-violet text-white hover:opacity-90 w-full">Buy Now</button>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-border/60 bg-secondary/30 p-4 md:grid-cols-4">
+                  {/* Features grid */}
+                  <div className="mt-5 grid grid-cols-2 gap-2 rounded-xl border border-border/60 bg-secondary/30 p-3 sm:mt-6 sm:gap-3 sm:rounded-2xl sm:p-4 md:mt-8 md:grid-cols-4">
                     {FEATURES.map((f) => (
                       <div key={f.label} className="text-center">
                         <f.icon className="mx-auto h-4 w-4 text-violet" />
-                        <p className="mt-1 text-xs font-medium text-foreground">{f.label}</p>
-                        <p className="text-[10px] text-muted-foreground">{f.desc}</p>
+                        <p className="mt-1 text-[10px] font-medium text-foreground sm:text-xs">{f.label}</p>
+                        <p className="text-[9px] text-muted-foreground sm:text-[10px]">{f.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -215,19 +260,20 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
             </div>
           </section>
 
-          <section className="border-t border-border/60 bg-gradient-soft py-16 md:py-24">
+          {/* Benefits + Specs */}
+          <section className="border-t border-border/60 bg-gradient-soft py-8 sm:py-12 md:py-20 lg:py-24">
             <div className="container-luxe">
-              <div className="grid gap-12 lg:grid-cols-2">
+              <div className="grid gap-8 md:gap-12 lg:grid-cols-2">
                 <div>
                   <p className="eyebrow">Why choose this</p>
-                  <h2 className="mt-3 font-display text-2xl font-semibold md:text-3xl">Engineered around <span className="text-gradient-brand">how it actually wears.</span></h2>
-                  <div className="mt-8 space-y-6">
+                  <h2 className="mt-2 font-display text-lg font-semibold sm:text-xl md:text-2xl lg:text-3xl">Engineered around <span className="text-gradient-brand">how it actually wears.</span></h2>
+                  <div className="mt-6 space-y-4 sm:space-y-6 md:mt-8">
                     {BENEFITS.map((b) => (
-                      <div key={b.title} className="flex gap-4">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-brand text-white"><b.icon className="h-4 w-4" /></span>
+                      <div key={b.title} className="flex gap-3 sm:gap-4">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-white sm:h-10 sm:w-10 sm:rounded-xl"><b.icon className="h-4 w-4" /></span>
                         <div>
-                          <p className="font-display text-sm font-semibold">{b.title}</p>
-                          <p className="mt-0.5 text-sm text-muted-foreground">{b.body}</p>
+                          <p className="font-display text-xs font-semibold sm:text-sm">{b.title}</p>
+                          <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">{b.body}</p>
                         </div>
                       </div>
                     ))}
@@ -235,8 +281,8 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
                 </div>
                 <div>
                   <p className="eyebrow">Specifications</p>
-                  <h2 className="mt-3 font-display text-2xl font-semibold md:text-3xl">What's in the <span className="text-gradient-brand">weave.</span></h2>
-                  <div className="mt-8 space-y-4">
+                  <h2 className="mt-2 font-display text-lg font-semibold sm:text-xl md:text-2xl lg:text-3xl">What's in the <span className="text-gradient-brand">weave.</span></h2>
+                  <div className="mt-6 space-y-3 sm:space-y-4 md:mt-8">
                     {[
                       { k: "Collection", v: selectedVar?.name ?? service.name },
                       { k: "Seasonality", v: service.season },
@@ -246,9 +292,9 @@ export default function ServiceDetail({ slug, service }: ServicePageProps) {
                       { k: "Weight", v: "180-220 GSM depending on grade" },
                       { k: "Certification", v: "OEKO-TEX Standard 100" },
                     ].map((d) => (
-                      <div key={d.k} className="flex justify-between border-b border-border/40 pb-3">
-                        <span className="text-sm text-muted-foreground">{d.k}</span>
-                        <span className="text-sm font-medium text-foreground">{d.v}</span>
+                      <div key={d.k} className="flex justify-between border-b border-border/40 pb-2.5 sm:pb-3 gap-2">
+                        <span className="text-xs text-muted-foreground shrink-0 sm:text-sm">{d.k}</span>
+                        <span className="text-xs font-medium text-foreground text-right sm:text-sm">{d.v}</span>
                       </div>
                     ))}
                   </div>

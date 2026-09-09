@@ -34,10 +34,10 @@ export default function Home({ services, collections }: HomePageProps) {
         <ThemeProvider>
             <div className="min-h-screen bg-background text-foreground">
                 <Navbar />
-                <main className="pt-20">
+                <main className="pt-0">
                     <Head>
-                        <title>PASSION — Crafted Fabric. Tailored Identity. Defined Excellence.</title>
-                        <meta name="description" content="Premium men's unstitched fabrics — Cotton, Wash & Wear, Formal Latha — engineered for elegance and precision tailoring. Book a fabric consultation." />
+                        <title>PASSION — Home</title>
+                        <meta name="description" content="Premium men's unstitched fabrics — Cotton, Wash & Wear, Formal Latha. Book a consultation." />
                         <meta property="og:title" content="PASSION — Premium Men's Unstitched Fabrics" />
                         <meta property="og:description" content="Crafted fabric. Tailored identity. Defined excellence." />
                     </Head>
@@ -47,7 +47,7 @@ export default function Home({ services, collections }: HomePageProps) {
                     <ServicesSection services={services} collections={collections} />
                     <FabricAdvisor />
                     <FounderSection />
-                    <Testimonials />
+                    {/* <Testimonials /> */}
                     <LocationsSection />
                     <FinalCta />
                 </main>

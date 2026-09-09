@@ -8,12 +8,13 @@ export function LocationsSection() {
     <section className="relative py-24 md:py-32">
       <div className="container-luxe">
         <SectionHeader
-          eyebrow="Boutiques"
-          title={<>From Lahore to <span className="text-gradient-brand">Silicon Valley.</span></>}
-          description="Two ateliers, one standard. Visit by appointment for a private fabric session, or chat with our advisor on WhatsApp from anywhere."
+          align="center"
+          eyebrow="Visit Us"
+          title={<>A space built for <span className="text-gradient-brand">considered choices.</span></>}
+          description="Book a private fabric session — walk in by appointment or connect with our advisor on WhatsApp from anywhere."
         />
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 sm:mt-14">
           {SITE.locations.map((loc, i) => (
             <motion.div
               key={loc.city}
@@ -21,9 +22,9 @@ export function LocationsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group overflow-hidden rounded-2xl border border-border/70 bg-card shadow-card"
+              className="group w-full overflow-hidden rounded-2xl border border-border/70 bg-card shadow-card"
             >
-              <div className="aspect-[16/10] w-full overflow-hidden border-b border-border/60">
+              <div className="aspect-[16/7] w-full overflow-hidden border-b border-border/60">
                 <iframe
                   src={loc.mapsEmbed}
                   width="100%"
@@ -34,14 +35,14 @@ export function LocationsSection() {
                   className="h-full w-full grayscale transition-all duration-700 group-hover:grayscale-0"
                 />
               </div>
-              <div className="flex items-center justify-between p-6">
+              <div className="flex items-center justify-between p-4 sm:p-6">
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                     {loc.country}
                   </p>
-                  <h3 className="mt-1 font-display text-xl font-semibold">{loc.city}</h3>
-                  <p className="mt-1 flex items-center gap-1.5 text-sm text-foreground/70">
-                    <MapPin className="h-3.5 w-3.5 text-violet" />
+                  <h3 className="mt-1 font-display text-lg sm:text-xl font-semibold">{loc.city}</h3>
+                  <p className="mt-1 flex items-center gap-1.5 text-xs sm:text-sm text-foreground/70">
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-violet" />
                     {loc.address}
                   </p>
                 </div>

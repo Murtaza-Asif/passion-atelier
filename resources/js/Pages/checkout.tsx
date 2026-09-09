@@ -86,8 +86,8 @@ export default function Checkout() {
       <ThemeProvider>
         <div className="min-h-screen bg-background text-foreground">
           <Navbar />
-          <main className="pt-20">
-            <div className="container-luxe py-20 text-center">
+          <main className="pt-16">
+            <div className="container-luxe px-4 sm:px-6 py-16 sm:py-20 text-center">
               <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground/40" />
               <h1 className="mt-6 font-display text-2xl font-semibold">Your cart is empty</h1>
               <p className="mt-2 text-muted-foreground">Add some products before checking out.</p>
@@ -105,8 +105,8 @@ export default function Checkout() {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
-          <Head title="Checkout — PASSION">
+        <main className="pt-16">
+          <Head title="PASSION — Checkout">
             <meta name="description" content="Complete your order." />
           </Head>
 
@@ -120,11 +120,11 @@ export default function Checkout() {
             </div>
           </section>
 
-          <section className="py-10 md:py-16">
-            <div className="container-luxe">
-              <div className="grid gap-10 lg:grid-cols-12">
+          <section className="py-6 sm:py-10 md:py-16">
+            <div className="container-luxe px-4 sm:px-6">
+              <div className="grid gap-8 sm:gap-10 lg:grid-cols-12">
                 <div className="lg:col-span-7">
-                  <h1 className="font-display text-2xl font-semibold md:text-3xl">Contact & Shipping</h1>
+                  <h1 className="font-display text-xl sm:text-2xl font-semibold md:text-3xl">Contact & Shipping</h1>
                   {user && (
                     <p className="mt-2 text-sm text-emerald-600">Signed in as {user.email}</p>
                   )}
@@ -175,7 +175,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="lg:col-span-5">
-                  <div className="sticky top-28 rounded-2xl border border-border/70 bg-card p-6">
+                  <div className="sticky top-28 rounded-2xl border border-border/70 bg-card p-4 sm:p-6">
                     <h2 className="font-display text-lg font-semibold">Order Summary</h2>
                     <p className="mt-1 text-xs text-muted-foreground">{cartCount} item{cartCount !== 1 ? "s" : ""}</p>
 

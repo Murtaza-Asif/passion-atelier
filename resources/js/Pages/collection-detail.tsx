@@ -62,7 +62,7 @@ function BannerSection({ collection }: { collection: any }) {
   if (images.length === 0) {
     const fallback = collectionImageMap[collection.slug];
     return (
-      <section className="relative h-[50vh] min-h-[320px] w-full overflow-hidden md:h-[65vh]">
+      <section className="relative h-[40vh] min-h-[260px] w-full overflow-hidden sm:h-[50vh] sm:min-h-[320px] md:h-[65vh]">
         {fallback ? (
           <img src={fallback} alt={collection.name} className="h-full w-full object-cover" />
         ) : (
@@ -128,17 +128,17 @@ export default function CollectionDetail({ collection, products }: any) {
         <Navbar />
         <main>
           <Head>
-            <title>{`${coll.name || "Collection"} — PASSION`}</title>
+            <title>{`PASSION — ${coll.name || "Collection"}`}</title>
             <meta name="description" content={coll.description || ""} />
           </Head>
 
           <BannerSection collection={coll} />
 
-          <section className="relative z-10 -mt-16 rounded-t-3xl bg-background px-4 pt-8 md:-mt-20 md:pt-12">
+          <section className="relative z-10 -mt-12 rounded-t-3xl bg-background px-4 pt-6 sm:-mt-16 sm:px-6 sm:pt-8 md:-mt-20 md:pt-12">
             <div className="container-luxe">
               <div className="mx-auto max-w-2xl text-center">
                 <p className="eyebrow">The Collection</p>
-                <h1 className="mt-3 font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.05] tracking-tight">
+                <h1 className="mt-3 font-display text-[clamp(1.6rem,4.5vw,3.5rem)] font-semibold leading-[1.05] tracking-tight">
                   {coll.name || "Collection"}
                 </h1>
                 {coll.description && (

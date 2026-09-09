@@ -81,11 +81,11 @@ export function FabricAdvisor() {
 
   return (
     <section className="relative py-24 md:py-32">
-      <div className="container-luxe">
+      <div className="container-luxe px-4 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <p className="eyebrow">Smart Advisor</p>
-            <h2 className="mt-4 font-display text-[clamp(1.9rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight">
+            <h2 className="mt-4 font-display text-[clamp(1.6rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight">
               Your personal <span className="text-gradient-brand">fabric stylist.</span>
             </h2>
             <p className="mt-5 text-base text-muted-foreground md:text-lg">
@@ -114,7 +114,7 @@ export function FabricAdvisor() {
             <div className="relative">
               <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-brand opacity-15 blur-3xl" />
               <div className="overflow-hidden rounded-3xl border border-border/70 bg-card shadow-card">
-                <div className="flex items-center justify-between border-b border-border/60 bg-gradient-soft p-5">
+                <div className="flex items-center justify-between border-b border-border/60 bg-gradient-soft p-4 sm:p-5">
                   <div className="flex items-center gap-3">
                     <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand text-white">
                       <Sparkles className="h-4 w-4" />
@@ -136,7 +136,7 @@ export function FabricAdvisor() {
                   </div>
                 </div>
 
-                <div className="min-h-[320px] p-6 md:p-8">
+                <div className="min-h-[280px] sm:min-h-[320px] p-4 sm:p-6 md:p-8">
                   <AnimatePresence mode="wait">
                     {!done ? (
                       <motion.div
@@ -149,10 +149,10 @@ export function FabricAdvisor() {
                         <p className="text-xs uppercase tracking-widest text-muted-foreground">
                           Step {step + 1} of {STEPS.length}
                         </p>
-                        <h3 className="mt-2 font-display text-2xl font-semibold leading-tight">
+                        <h3 className="mt-2 font-display text-xl sm:text-2xl font-semibold leading-tight">
                           {current.label}
                         </h3>
-                        <div className="mt-6 grid gap-2.5 sm:grid-cols-2">
+                        <div className="mt-6 grid gap-2.5 grid-cols-1 sm:grid-cols-2">
                           {current.options.map((opt) => (
                             <button
                               key={opt.v}

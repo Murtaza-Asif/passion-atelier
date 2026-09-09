@@ -11,14 +11,14 @@ export default function Testimonials() {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-16">
           <Head>
-            <title>Testimonials — PASSION</title>
+            <title>PASSION — Testimonials</title>
             <meta name="description" content="Reflections from clients, master tailors, and creative directors who've made PASSION part of their routine." />
-            <meta property="og:title" content="Testimonials — PASSION" />
+            <meta property="og:title" content="PASSION — Testimonials" />
             <meta property="og:description" content="The verdict from discerning men." />
           </Head>
-      <section className="bg-gradient-soft pt-32 pb-12 md:pt-40">
+      <section className="bg-gradient-soft pt-32 pb-12 md:pt-16">
         <div className="container-luxe max-w-3xl">
           <p className="eyebrow">In their words</p>
           <h1 className="mt-4 font-display text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.05] tracking-tight">

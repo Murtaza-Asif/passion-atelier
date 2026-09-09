@@ -21,7 +21,7 @@ const TESTIMONIALS = [
   {
     quote: "Consistent quality across six orders. Their cotton holds shape better than goods I've sourced at three times the price.",
     name: "Saad M.",
-    role: "Boutique owner, Lahore",
+    role: "Outlet owner, Lahore",
   },
   {
     quote: "What surprised me was the after-care — they followed up after stitching to confirm the fit. That's heritage thinking.",
@@ -45,7 +45,7 @@ export function Testimonials() {
           description="A small selection of unedited reflections from clients, tailors and creative directors who've made PASSION a part of their routine."
         />
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <motion.figure
               key={i}
@@ -53,7 +53,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-              className="group relative flex flex-col rounded-2xl border border-border/70 bg-card p-7 transition-all duration-500 hover:-translate-y-1 hover:shadow-card"
+              className="group relative flex flex-col rounded-2xl border border-border/70 bg-card p-5 sm:p-7 transition-all duration-500 hover:-translate-y-1 hover:shadow-card"
             >
               <Quote className="h-7 w-7 text-violet/60" />
               <blockquote className="mt-5 text-[15px] leading-relaxed text-foreground/85">

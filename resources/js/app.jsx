@@ -9,6 +9,7 @@ import { AuthProvider, PendingCartRestorer } from './Lib/auth-context';
 import { AuthModal } from './Components/AuthModal';
 import { useCart } from './Lib/cart-context';
 import { ErrorBoundary } from './Components/ErrorBoundary';
+import { PageLoader } from './Components/PageLoader';
 
 const CartDrawer = lazy(() => import('./Layouts/cart-drawer').then(m => ({ default: m.CartDrawer })));
 
@@ -19,6 +20,7 @@ function AppShell({ children }) {
     <ErrorBoundary>
       <CartProvider>
         <AuthProvider>
+          <PageLoader />
           {children}
           <CartGlobal />
           <AuthModal />
@@ -39,7 +41,7 @@ function CartGlobal() {
 }
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => title,
     resolve: (name) => {
         const pages = import.meta.glob('./Pages/**/*.{tsx,jsx}');
         return resolvePageComponent(`./Pages/${name}.tsx`, pages)
@@ -54,7 +56,5 @@ createInertiaApp({
           </AppShell>
         );
     },
-    progress: {
-        color: '#4B5563',
-    },
+    progress: false,
 });

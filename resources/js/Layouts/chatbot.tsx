@@ -36,7 +36,7 @@ const FAQS: { match: RegExp; reply: string; cta?: Msg["cta"] }[] = [
   },
   {
     match: /location|address|store|where/i,
-    reply: "Two ateliers — Khayaban-e-Amin in Lahore, and a flagship in Silicon Valley, USA. Both are open by appointment.",
+    reply: "Our outlet is at Bolton Market, Saddar, Karachi. Open by appointment.",
     cta: [{ label: "See locations", href: "/contact" }],
   },
   {

@@ -34,19 +34,25 @@ class ServiceSeeder extends Seeder
             'is_admin' => true,
         ]);
 
+        // ── Product Types ────────────────────────────────────────────
         $fabricType = ProductType::create(['name' => 'Unstitched Fabric', 'description' => 'Premium unstitched fabric by the meter', 'sort_order' => 0, 'is_active' => true]);
         ProductType::create(['name' => 'Stitched Suit', 'description' => 'Ready-to-wear stitched suits', 'sort_order' => 1, 'is_active' => true]);
         ProductType::create(['name' => 'Perfume', 'description' => 'Luxury fragrances', 'sort_order' => 2, 'is_active' => true]);
         ProductType::create(['name' => 'Accessory', 'description' => 'Premium accessories', 'sort_order' => 3, 'is_active' => true]);
 
+        // ── Brand ────────────────────────────────────────────────────
         $brand = Brand::create(['name' => 'Passion Atelier', 'description' => 'Premium unstitched fabric atelier', 'status' => true, 'sort_order' => 0]);
 
+        // ── 6 Categories ─────────────────────────────────────────────
         $categories = [];
-        $categories[] = Category::create(['name' => 'Shalwar Kameez', 'description' => 'Traditional shalwar kameez fabric', 'status' => true, 'sort_order' => 0]);
-        $categories[] = Category::create(['name' => 'Suits', 'description' => 'Three-piece and two-piece suit fabric', 'status' => true, 'sort_order' => 1]);
-        $categories[] = Category::create(['name' => 'Formal Wear', 'description' => 'Formal and business attire fabric', 'status' => true, 'sort_order' => 2]);
-        $categories[] = Category::create(['name' => 'Accessories', 'description' => 'Premium accessories', 'status' => true, 'sort_order' => 3]);
+        $categories[] = Category::create(['name' => 'Cotton Collection', 'description' => 'Premium cotton fabrics for all seasons', 'status' => true, 'sort_order' => 0]);
+        $categories[] = Category::create(['name' => 'Linen Series', 'description' => 'Breathable linen fabrics for warm weather', 'status' => true, 'sort_order' => 1]);
+        $categories[] = Category::create(['name' => 'Latha Premium', 'description' => 'Premium latha fabrics for formal wear', 'status' => true, 'sort_order' => 2]);
+        $categories[] = Category::create(['name' => 'Silk Blend', 'description' => 'Luxurious silk blend fabrics', 'status' => true, 'sort_order' => 3]);
+        $categories[] = Category::create(['name' => 'Wool Classic', 'description' => 'Warm wool fabrics for winter', 'status' => true, 'sort_order' => 4]);
+        $categories[] = Category::create(['name' => 'Wash & Wear', 'description' => 'Low-maintenance wrinkle-free fabrics', 'status' => true, 'sort_order' => 5]);
 
+        // ── Tags ─────────────────────────────────────────────────────
         $tags = [];
         $tags[] = Tag::create(['name' => 'Best Seller']);
         $tags[] = Tag::create(['name' => 'New Arrival']);
@@ -54,6 +60,7 @@ class ServiceSeeder extends Seeder
         $tags[] = Tag::create(['name' => 'Premium']);
         $tags[] = Tag::create(['name' => 'Eco Friendly']);
 
+        // ── Colors ───────────────────────────────────────────────────
         $colorsData = [
             ['name' => 'Ivory', 'hex_code' => '#f5f0e8', 'status' => true, 'sort_order' => 0],
             ['name' => 'White', 'hex_code' => '#f8f8f6', 'status' => true, 'sort_order' => 1],
@@ -73,32 +80,18 @@ class ServiceSeeder extends Seeder
             Color::create($c);
         }
 
-        // ── 20 Collections of Men's Unstitched Fabric ─────────────────
-        $collectionNames = [
+        // ── Collections (one per category) ───────────────────────────
+        $collectionsData = [
             ['name' => 'Classic Cotton', 'desc' => 'Timeless cotton fabrics for everyday sophistication'],
-            ['name' => 'Premium Egyptian Cotton', 'desc' => 'Luxurious long-staple Egyptian cotton for refined comfort'],
-            ['name' => 'Executive Latha', 'desc' => 'Premium latha fabrics tailored for the boardroom'],
+            ['name' => 'Summer Linen', 'desc' => 'Lightweight breathable linen for warm days'],
             ['name' => 'Royal Latha', 'desc' => 'Opulent latha weaves for ceremonial occasions'],
-            ['name' => 'Modern Wash & Wear', 'desc' => 'Wrinkle-resistant fabrics for the modern professional'],
-            ['name' => 'Business Formal', 'desc' => 'Sharp formal fabrics for power dressing'],
-            ['name' => 'Heritage Weave', 'desc' => 'Traditional handloom weaves with a heritage touch'],
-            ['name' => 'Daily Comfort', 'desc' => 'Soft breathable fabrics for everyday wear'],
-            ['name' => 'Summer Breeze', 'desc' => 'Lightweight cooling fabrics for warm weather'],
-            ['name' => 'Winter Warmth', 'desc' => 'Warm cozy fabrics for the colder months'],
-            ['name' => 'Office Essential', 'desc' => 'Reliable workwear fabrics that last all day'],
-            ['name' => 'Weekend Casual', 'desc' => 'Relaxed easy-going fabrics for off-duty days'],
-            ['name' => 'Ceremonial Luxe', 'desc' => 'Rich celebratory fabrics for weddings and events'],
-            ['name' => 'Travel Ready', 'desc' => 'Crease-resistant packable fabrics for jet-setters'],
-            ['name' => 'Eco Weave', 'desc' => 'Sustainable eco-friendly fabrics for conscious dressing'],
-            ['name' => 'Power Suiting', 'desc' => 'Bold authoritative suiting fabrics for leaders'],
-            ['name' => 'Signature Collection', 'desc' => 'Curated premium picks from the master atelier'],
-            ['name' => 'Urban Edge', 'desc' => 'Contemporary urban fabrics with a modern cut'],
-            ['name' => 'Traditional Classic', 'desc' => 'Time-honoured classic fabrics for timeless style'],
-            ['name' => 'Bespoke Edition', 'desc' => 'Exclusive limited-run fabrics for discerning gentlemen'],
+            ['name' => 'Silk Luxe', 'desc' => 'Luxurious silk blend fabrics with elegant drape'],
+            ['name' => 'Winter Wool', 'desc' => 'Warm cozy wool fabrics for colder months'],
+            ['name' => 'Daily Fresh', 'desc' => 'Wrinkle-free low-maintenance everyday fabrics'],
         ];
 
         $collections = [];
-        foreach ($collectionNames as $i => $c) {
+        foreach ($collectionsData as $i => $c) {
             $collections[] = Collection::create([
                 'name' => $c['name'],
                 'description' => $c['desc'],
@@ -109,95 +102,125 @@ class ServiceSeeder extends Seeder
             ]);
         }
 
-        // ── Generate 50 Products per Collection (1000 total) ──────────
-        $fabricAdjectives = ['Premium', 'Classic', 'Luxury', 'Refined', 'Essential', 'Heritage', 'Signature', 'Executive', 'Royal', 'Modern'];
-        $fabricNouns = ['Weave', 'Cloth', 'Fabric', 'Textile', 'Material', 'Drape', 'Finish', 'Twist', 'Blend', 'Thread'];
-        $fabricWeights = ['80s', '100s', '120s', '140s', '2x2', '2 Ply', 'Superfine', 'Ultra Fine', 'Double Twist', 'Single Ply'];
-        $colorNames = array_column($colorsData, 'name');
-        $seasonLabels = ['All-season', 'Summer', 'Winter', 'Spring · Autumn', 'Year-round'];
-        $units = ['meter', 'meter', 'meter', 'meter', 'yard'];
+        // ── Product Names per Category ───────────────────────────────
+        $productsByCategory = [
+            // Cotton Collection (5 products)
+            [
+                ['title' => 'Classic Cotton Ivory', 'price' => 3500, 'sale' => 2999, 'image' => 'cotton'],
+                ['title' => 'Premium Cotton White', 'price' => 4200, 'sale' => null, 'image' => 'cotton'],
+                ['title' => 'Heritage Cotton Navy', 'price' => 5500, 'sale' => 4800, 'image' => 'cotton'],
+                ['title' => 'Signature Cotton Stone', 'price' => 4800, 'sale' => null, 'image' => 'cotton'],
+                ['title' => 'Executive Cotton Charcoal', 'price' => 6200, 'sale' => 5500, 'image' => 'cotton'],
+            ],
+            // Linen Series (5 products)
+            [
+                ['title' => 'Summer Linen Ivory', 'price' => 4500, 'sale' => 3999, 'image' => 'latha'],
+                ['title' => 'Breeze Linen White', 'price' => 5200, 'sale' => null, 'image' => 'latha'],
+                ['title' => 'Airy Linen Sage', 'price' => 5800, 'sale' => 5200, 'image' => 'latha'],
+                ['title' => 'Cool Linen Light Grey', 'price' => 4900, 'sale' => null, 'image' => 'latha'],
+                ['title' => 'Natural Linen Stone', 'price' => 5500, 'sale' => 4800, 'image' => 'latha'],
+            ],
+            // Latha Premium (5 products)
+            [
+                ['title' => 'Royal Latha Midnight', 'price' => 7500, 'sale' => 6800, 'image' => 'latha'],
+                ['title' => 'Executive Latha Navy', 'price' => 8200, 'sale' => null, 'image' => 'latha'],
+                ['title' => 'Premium Latha Black', 'price' => 9500, 'sale' => 8500, 'image' => 'latha'],
+                ['title' => 'Elite Latha Charcoal', 'price' => 8800, 'sale' => null, 'image' => 'latha'],
+                ['title' => 'Heritage Latha Burgundy', 'price' => 10200, 'sale' => 9200, 'image' => 'latha'],
+            ],
+            // Silk Blend (5 products)
+            [
+                ['title' => 'Silk Luxe Ivory', 'price' => 12000, 'sale' => 10800, 'image' => 'custom'],
+                ['title' => 'Silk Blend Navy', 'price' => 14500, 'sale' => null, 'image' => 'custom'],
+                ['title' => 'Royal Silk Black', 'price' => 15800, 'sale' => 14200, 'image' => 'custom'],
+                ['title' => 'Premium Silk Stone', 'price' => 13200, 'sale' => null, 'image' => 'custom'],
+                ['title' => 'Signature Silk Forest', 'price' => 16500, 'sale' => 15000, 'image' => 'custom'],
+            ],
+            // Wool Classic (5 products)
+            [
+                ['title' => 'Winter Wool Charcoal', 'price' => 8500, 'sale' => 7800, 'image' => 'washwear'],
+                ['title' => 'Classic Wool Navy', 'price' => 9200, 'sale' => null, 'image' => 'washwear'],
+                ['title' => 'Premium Wool Black', 'price' => 10500, 'sale' => 9500, 'image' => 'washwear'],
+                ['title' => 'Heritage Wool Espresso', 'price' => 9800, 'sale' => null, 'image' => 'washwear'],
+                ['title' => 'Elite Wool Midnight', 'price' => 11200, 'sale' => 10000, 'image' => 'washwear'],
+            ],
+            // Wash & Wear (5 products)
+            [
+                ['title' => 'Fresh White W&W', 'price' => 3200, 'sale' => 2800, 'image' => 'washwear'],
+                ['title' => 'Daily Navy W&W', 'price' => 3800, 'sale' => null, 'image' => 'washwear'],
+                ['title' => 'Smart Grey W&W', 'price' => 4200, 'sale' => 3600, 'image' => 'washwear'],
+                ['title' => 'Easy Stone W&W', 'price' => 3500, 'sale' => null, 'image' => 'washwear'],
+                ['title' => 'Executive Black W&W', 'price' => 4800, 'sale' => 4200, 'image' => 'washwear'],
+            ],
+        ];
+
         $descriptions = [
             'Crafted from premium yarns for a superior hand-feel and lasting comfort.',
             'A fine weave that balances breathability with a structured silhouette.',
             'Designed for the discerning gentleman who values quality and tradition.',
             'Expertly woven to deliver unmatched durability and a soft drape.',
             'The perfect choice for refined everyday elegance and effortless style.',
-            'Meticulously crafted fabric that holds its shape through the longest days.',
-            'A sophisticated textile with a smooth finish and graceful fall.',
-            'Lightweight yet substantial — ideal for tailored fits and clean lines.',
-            'Timeless quality that transcends seasons and occasions.',
-            'Superior craftsmanship meets contemporary design in every yard.',
         ];
 
+        $colorNames = array_column($colorsData, 'name');
         $products = [];
         $variantsData = [];
         $productTags = [];
         $allSlugs = [];
 
-        foreach ($collections as $ci => $collection) {
-            $colSlug = Str::slug($collection->name);
-            $category = $categories[$ci % 3]; // cycle through first 3 categories
+        foreach ($productsByCategory as $catIdx => $catProducts) {
+            $category = $categories[$catIdx];
+            $collection = $collections[$catIdx];
 
-            for ($p = 1; $p <= 50; $p++) {
-                $adj = $fabricAdjectives[array_rand($fabricAdjectives)];
-                $noun = $fabricNouns[array_rand($fabricNouns)];
-                $weight = $fabricWeights[array_rand($fabricWeights)];
-                $title = "{$collection->name} {$adj} {$noun} {$weight}";
-                $slug = Str::slug($title).'-'.Str::random(4);
+            foreach ($catProducts as $pIdx => $pData) {
+                $title = $pData['title'];
+                $slug = Str::slug($title);
                 $allSlugs[] = $slug;
-                $descKey = array_rand($descriptions);
-                $regularPrice = rand(25, 120) * 100; // 2500-12000
-                $hasSale = rand(0, 3) > 0; // 75% chance
-                $salePrice = $hasSale ? $regularPrice - rand(1, 3) * 500 : null;
-                $season = $seasonLabels[array_rand($seasonLabels)];
-                $unit = $units[array_rand($units)];
-                $stock = rand(20, 200);
+                $regularPrice = $pData['price'];
+                $salePrice = $pData['sale'];
+                $stock = rand(30, 150);
+                $desc = $descriptions[$pIdx % count($descriptions)];
 
-                $productData = [
+                $products[] = [
                     'product_type_id' => $fabricType->id,
                     'brand_id' => $brand->id,
                     'collection_id' => $collection->id,
                     'category_id' => $category->id,
                     'title' => $title,
                     'slug' => $slug,
-                    'featured_image' => null,
-                    'short_description' => $descriptions[$descKey],
-                    'full_description' => $descriptions[$descKey].' From the '.$collection->name.', this '.strtolower($adj).' '.strtolower($noun).' offers exceptional quality and a refined finish suitable for any occasion.',
-                    'season_label' => $season,
+                    'featured_image' => $pData['image'],
+                    'short_description' => $desc,
+                    'full_description' => $desc.' From the '.$collection->name.' collection, this fabric offers exceptional quality and a refined finish suitable for any occasion.',
+                    'season_label' => ['All-season', 'Summer', 'Winter', 'Spring · Autumn'][array_rand([0, 1, 2, 3])],
                     'regular_price' => $regularPrice,
                     'sale_price' => $salePrice,
                     'cost_price' => intval($regularPrice * 0.45),
-                    'unit' => $unit,
-                    'is_featured' => $p <= 3,
-                    'is_new_arrival' => $p <= 8,
-                    'is_best_seller' => $p <= 5,
-                    'is_trending' => $p >= 45,
+                    'unit' => 'meter',
+                    'is_featured' => $pIdx < 2,
+                    'is_new_arrival' => $pIdx < 3,
+                    'is_best_seller' => $pIdx < 2,
+                    'is_trending' => $pIdx >= 3,
                     'status' => 'published',
-                    'published_at' => now()->subDays(rand(0, 60)),
-                    'sort_order' => $ci * 50 + $p,
+                    'published_at' => now()->subDays(rand(0, 30)),
+                    'sort_order' => $catIdx * 5 + $pIdx + 1,
                     'total_stock' => $stock,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
-                $products[] = $productData;
 
-                // 3 variants per product
-                $vColors = array_rand(array_flip($colorNames), min(3, count($colorNames)));
-                if (! is_array($vColors)) {
-                    $vColors = [$vColors];
-                }
-                $baseSku = strtoupper(Str::slug($collection->name, '_')).'-'.str_pad((string) $p, 3, '0', STR_PAD_LEFT);
-                for ($v = 0; $v < 3; $v++) {
+                // 2 variants per product
+                $baseSku = strtoupper(Str::slug($collection->name, '_')).'-'.str_pad((string) ($catIdx * 5 + $pIdx + 1), 3, '0', STR_PAD_LEFT);
+                for ($v = 0; $v < 2; $v++) {
                     $vPrice = $regularPrice + ($v * 500);
-                    $vSale = $hasSale ? $vPrice - rand(1, 3) * 500 : null;
+                    $vSale = $salePrice ? $vPrice - 500 : null;
                     $variantsData[] = [
                         'product_slug' => $slug,
-                        'color_name' => $vColors[$v % count($vColors)],
-                        'name' => $fabricAdjectives[array_rand($fabricAdjectives)].' '.($v + 1),
+                        'color_name' => $colorNames[($catIdx * 2 + $v) % count($colorNames)],
+                        'name' => ['Standard', 'Premium'][$v],
                         'sku' => $baseSku.'-'.chr(65 + $v),
                         'price' => $vPrice,
                         'sale_price' => $vSale,
-                        'stock' => max(5, intval($stock / 3)),
+                        'stock' => max(5, intval($stock / 2)),
                         'sort_order' => $v,
                         'is_default' => $v === 0,
                         'status' => true,
@@ -208,20 +231,17 @@ class ServiceSeeder extends Seeder
 
                 // tags
                 $assignedTags = [];
-                if ($p <= 5) {
+                if ($pIdx < 2) {
                     $assignedTags[] = 'Best Seller';
                 }
-                if ($p <= 8) {
+                if ($pIdx < 3) {
                     $assignedTags[] = 'New Arrival';
                 }
-                if ($p >= 48) {
+                if ($pIdx >= 4) {
                     $assignedTags[] = 'Limited Edition';
                 }
-                if ($p <= 3) {
+                if ($pIdx < 2) {
                     $assignedTags[] = 'Premium';
-                }
-                if (rand(0, 10) > 8) {
-                    $assignedTags[] = 'Eco Friendly';
                 }
                 if (! empty($assignedTags)) {
                     $productTags[] = ['slug' => $slug, 'tags' => $assignedTags];
@@ -230,10 +250,7 @@ class ServiceSeeder extends Seeder
         }
 
         // Bulk insert products
-        $chunks = array_chunk($products, 100);
-        foreach ($chunks as $chunk) {
-            Product::insert($chunk);
-        }
+        Product::insert($products);
 
         // Fetch all inserted products keyed by slug
         $productModels = Product::whereIn('slug', $allSlugs)->get()->keyBy('slug');
@@ -261,10 +278,7 @@ class ServiceSeeder extends Seeder
                 'updated_at' => $vd['updated_at'],
             ];
         }
-        $vChunks = array_chunk($variantInserts, 200);
-        foreach ($vChunks as $chunk) {
-            ProductVariant::insert($chunk);
-        }
+        ProductVariant::insert($variantInserts);
 
         // Attach tags
         $tagsByName = Tag::pluck('id', 'name');
@@ -309,35 +323,24 @@ class ServiceSeeder extends Seeder
             }
         }
 
-        // Reviews (bulk insert)
+        // Reviews
         $productIds = Product::pluck('id');
         $user = User::first();
-        $reviewTitles = [
-            'Excellent quality!', 'Superb fabric!', 'Love the texture!',
-            'Great value!', 'Exactly what I needed', 'Top-notch quality',
-            'Very satisfied', 'Highly recommended', 'Perfect for shalwar kameez',
-            'Outstanding finish',
-        ];
+        $reviewTitles = ['Excellent quality!', 'Superb fabric!', 'Love the texture!', 'Great value!', 'Exactly what I needed'];
         $reviewBodies = [
             'The fabric quality is outstanding. Highly recommended for anyone looking for premium unstitched fabric.',
             'Amazing texture and feel. The fabric breathes well and drapes beautifully.',
-            'Bought this for my wedding sherwani. The quality exceeded my expectations.',
+            'Bought this for a special occasion. The quality exceeded my expectations.',
             'Perfect for daily wear. Comfortable and durable even after multiple washes.',
             'The fabric has a lovely sheen and feels substantial without being heavy.',
-            'Excellent craftsmanship — you can feel the quality the moment you touch it.',
-            'Great for formal occasions. Holds its shape perfectly throughout the day.',
-            'Soft yet sturdy. Exactly what I was looking for in a premium fabric.',
-            'The colour is rich and even, and the fabric cuts beautifully.',
-            'Will definitely order again. This is my go-to for quality unstitched fabric.',
         ];
-        $reviewRatings = [5, 5, 5, 4, 5, 4, 5, 4, 5, 5];
         $reviewData = [];
         foreach ($productIds as $i => $pid) {
             $idx = $i % count($reviewTitles);
             $reviewData[] = [
                 'product_id' => $pid,
                 'user_id' => $user->id,
-                'rating' => $reviewRatings[$idx],
+                'rating' => [5, 5, 4, 5, 5][$idx],
                 'title' => $reviewTitles[$idx],
                 'body' => $reviewBodies[$idx],
                 'is_approved' => true,
@@ -345,12 +348,9 @@ class ServiceSeeder extends Seeder
                 'updated_at' => now(),
             ];
         }
-        $rChunks = array_chunk($reviewData, 200);
-        foreach ($rChunks as $chunk) {
-            Review::insert($chunk);
-        }
+        Review::insert($reviewData);
 
-        // FAQs (bulk insert)
+        // FAQs
         $faqData = [];
         foreach ($productIds as $pid) {
             $faqData[] = [
@@ -372,10 +372,7 @@ class ServiceSeeder extends Seeder
                 'updated_at' => now(),
             ];
         }
-        $faqChunks = array_chunk($faqData, 200);
-        foreach ($faqChunks as $chunk) {
-            ProductFaq::insert($chunk);
-        }
+        ProductFaq::insert($faqData);
 
         // Coupon
         Coupon::create([
@@ -410,7 +407,7 @@ class ServiceSeeder extends Seeder
             'sort_order' => 0,
             'is_active' => true,
         ]);
-        $featuredIds = $productIds->take(12);
+        $featuredIds = $productIds->take(6);
         foreach ($featuredIds as $i => $pid) {
             HomepageSectionProduct::create([
                 'homepage_section_id' => $featuredSection->id,
@@ -426,7 +423,7 @@ class ServiceSeeder extends Seeder
             'sort_order' => 1,
             'is_active' => true,
         ]);
-        $newIds = Product::where('is_new_arrival', true)->pluck('id')->take(8);
+        $newIds = Product::where('is_new_arrival', true)->pluck('id')->take(6);
         foreach ($newIds as $i => $pid) {
             HomepageSectionProduct::create([
                 'homepage_section_id' => $newSection->id,

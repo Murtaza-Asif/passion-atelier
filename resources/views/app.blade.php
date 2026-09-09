@@ -2,10 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
         <meta name="theme-color" content="#1a1a2e">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia></title>
+
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
         <!-- Fonts (non-render-blocking) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +21,7 @@
         @vite(['resources/js/app.jsx'])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased overflow-x-hidden">
         @inertia
     </body>
 </html>

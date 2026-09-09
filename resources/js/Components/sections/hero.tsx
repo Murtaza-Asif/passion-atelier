@@ -285,7 +285,7 @@ export function Hero() {
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                   Hand-finished
                 </p>
-                <p className="mt-1 font-display text-base font-semibold">120s combed yarn</p>
+                <p className="mt-1 font-display text-base font-semibold" style={{ color: "oklch(0.13 0.015 280)" }}>120s combed yarn</p>
               </motion.div>
 
               {/* Floating swatch chips — bottom-right */}

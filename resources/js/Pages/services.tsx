@@ -16,21 +16,21 @@ export default function Services({ services }: ServicePageProps) {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-16">
           <Head>
-            <title>Shop Collections — PASSION</title>
+            <title>PASSION — Shop</title>
             <meta name="description" content="Browse our complete collection of premium men's unstitched fabrics — Premium Cotton, Luxury Wash & Wear, Formal Latha, and Custom Selection." />
-            <meta property="og:title" content="Shop Collections — PASSION" />
+            <meta property="og:title" content="PASSION — Shop" />
             <meta property="og:description" content="Four signature unstitched fabric collections, each engineered for a different way of wearing." />
           </Head>
 
-          <section className="bg-gradient-soft pt-32 pb-12 md:pt-40">
-            <div className="container-luxe">
+          <section className="bg-gradient-soft pt-28 pb-8 sm:pt-32 md:pt-16 md:pb-12">
+            <div className="container-luxe px-4 sm:px-6">
               <p className="eyebrow">The Shop</p>
-              <h1 className="mt-4 max-w-3xl font-display text-[clamp(2.4rem,5.5vw,4.6rem)] font-semibold leading-[1.02] tracking-tight">
+              <h1 className="mt-4 max-w-3xl font-display text-[clamp(1.8rem,5.5vw,4.6rem)] font-semibold leading-[1.02] tracking-tight">
                 Four signatures, <span className="text-gradient-brand">one philosophy.</span>
               </h1>
-              <p className="mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
+              <p className="mt-4 max-w-2xl text-sm text-muted-foreground sm:mt-5 sm:text-base md:text-lg">
                 Each collection is a study in restraint — refined materials,
                 considered finishing, and detail you only notice when it's missing.
               </p>

@@ -17,9 +17,9 @@ export default function UnderDevelopment({ status }: { status?: number }) {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="flex min-h-[70vh] items-center justify-center px-4 pt-20">
+        <main className="flex min-h-[70vh] items-center justify-center px-4 pt-16">
           <Head>
-            <title>{`${title} — PASSION`}</title>
+            <title>{`PASSION — ${title}`}</title>
           </Head>
           <div className="max-w-md text-center">
             <div className="text-8xl font-bold text-gradient-brand leading-none">{status || "*"}</div>

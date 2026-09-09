@@ -41,21 +41,21 @@ export default function Collections({ collections }: CollectionsPageProps) {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-16">
           <Head>
-            <title>All Collections — PASSION</title>
+            <title>PASSION — Collections</title>
             <meta name="description" content="Browse PASSION's complete collection of premium men's unstitched fabrics." />
-            <meta property="og:title" content="Collections — PASSION" />
+            <meta property="og:title" content="PASSION — Collections" />
             <meta property="og:description" content="Premium men's unstitched fabric collections." />
           </Head>
 
-          <section className="bg-gradient-soft pt-32 pb-8 md:pt-40">
-            <div className="container-luxe max-w-3xl">
+          <section className="bg-gradient-soft pt-28 pb-6 sm:pt-32 md:pt-16 md:pb-8">
+            <div className="container-luxe max-w-3xl px-4 sm:px-6">
               <p className="eyebrow">The Collections</p>
-              <h1 className="mt-4 font-display text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.05] tracking-tight">
+              <h1 className="mt-4 font-display text-[clamp(1.7rem,5vw,4rem)] font-semibold leading-[1.05] tracking-tight">
                 Every length, <span className="text-gradient-brand">considered.</span>
               </h1>
-              <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
+              <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:mt-6 sm:text-base md:text-lg">
                 Four signature collections, each refined to a single purpose. Tap any tile to discover its story.
               </p>
             </div>

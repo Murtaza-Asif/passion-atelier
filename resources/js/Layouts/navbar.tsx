@@ -58,7 +58,7 @@ export function Navbar() {
           )}
         >
           <Link href="/" className="flex items-center gap-2 px-3 py-1">
-            <span className="relative inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-brand text-[10px] font-bold tracking-wider text-white">
+            <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-brand text-xs font-bold tracking-wider text-white">
               P
               <span className="absolute -inset-1 -z-10 rounded-full bg-gradient-brand opacity-40 blur-md" />
             </span>

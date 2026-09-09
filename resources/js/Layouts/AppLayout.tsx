@@ -13,7 +13,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-16">
           {children}
         </main>
         <Footer />

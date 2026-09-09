@@ -52,8 +52,8 @@ export default function MyOrders({ orders }: Props) {
     <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
-        <main className="pt-20">
-          <Head title="My Orders — PASSION" />
+        <main className="pt-16">
+          <Head title="PASSION — My Orders" />
 
           <section className="border-b border-border/60 bg-secondary/30">
             <div className="container-luxe flex items-center gap-2 py-3 text-xs text-muted-foreground">

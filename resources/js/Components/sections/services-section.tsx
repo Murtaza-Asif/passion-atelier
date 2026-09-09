@@ -130,7 +130,7 @@ export function SectionHeader({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mt-4 font-display text-[clamp(1.9rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight"
+        className="mt-4 font-display text-[clamp(1.5rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight"
       >
         {title}
       </motion.h2>
@@ -140,7 +140,7 @@ export function SectionHeader({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-5 text-base text-muted-foreground md:text-lg"
+          className="mt-4 text-sm text-muted-foreground sm:text-base md:text-lg"
         >
           {description}
         </motion.p>

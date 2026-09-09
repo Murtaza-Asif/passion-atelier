@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { motion } from "framer-motion";
-import { ArrowRight, Eye } from "lucide-react";
+import { ArrowRight, Eye, Lock } from "lucide-react";
 import type { FrontendProduct, FrontendVariation, FrontendColor } from "@/Lib/site";
 import { SORT_OPTIONS } from "@/Lib/site";
 import cotton from "@/assets/fabric-cotton.jpg";
@@ -78,7 +78,7 @@ export function ProductGrid({ services, limit }: { services: FrontendProduct[]; 
         </div>
       )}
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {sorted.map((service, i) => {
           const img = service.featured_image_url ?? imageMap[service.image_key ?? 'cotton'] ?? cotton;
 
@@ -102,6 +102,16 @@ export function ProductGrid({ services, limit }: { services: FrontendProduct[]; 
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+                  {service.in_stock === false && (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/30 bg-white/10">
+                        <Lock className="h-7 w-7 text-white" />
+                      </div>
+                      <p className="mt-3 text-sm font-semibold uppercase tracking-widest text-white">Out of Stock</p>
+                      <p className="mt-1 text-[11px] text-white/70">Coming back soon, Inshallah</p>
+                    </div>
+                  )}
 
                   {hasDiscount(service) && (
                     <span className="absolute left-3 top-3 rounded-full bg-destructive px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-destructive-foreground">

@@ -4,7 +4,7 @@ const TIMELINE = [
   { y: "01", title: "Brand Foundation", body: "PASSION is founded in Lahore with a single ambition: to make unstitched fabric the most considered purchase a man makes." },
   { y: "02", title: "Collection Expansion", body: "Cotton, Wash & Wear and Latha series are introduced — each with proprietary finishing standards." },
   { y: "03", title: "International Tailoring Partnerships", body: "Direct supply relationships with master tailors across the GCC, UK and South-East Asia." },
-  { y: "04", title: "Global Luxury Positioning", body: "Silicon Valley flagship opens; PASSION enters the conversation with the world's most respected fabric houses." },
+  { y: "04", title: "National Expansion", body: "Karachi outlet opens at Bolton Market; PASSION establishes a presence in Pakistan's fashion capital." },
 ];
 
 export function FounderSection() {
@@ -19,7 +19,7 @@ export function FounderSection() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="eyebrow">Letter from the founder</p>
-          <h2 className="mt-4 font-display text-[clamp(1.9rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight">
+          <h2 className="mt-4 font-display text-[clamp(1.6rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight">
             &ldquo;Redefining men&rsquo;s elegance through<br />
             <span className="text-gradient-brand">precision fabric craftsmanship.</span>&rdquo;
           </h2>

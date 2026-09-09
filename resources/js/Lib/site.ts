@@ -1,24 +1,17 @@
 export const SITE = {
   brand: "PASSION",
   tagline: "Crafted Fabric. Tailored Identity.",
-  whatsapp: "923232032700",
-  whatsappLink: "https://wa.me/923232032700",
+  whatsapp: "923212047973",
+  whatsappLink: "https://wa.me/923212047973",
   founder: "Muhammad Asif Khan",
-  email: "atelier@passionfabrics.com",
+  email: "info.passionatelier@gmail.com",
   locations: [
     {
-      city: "Lahore",
+      city: "Karachi",
       country: "Pakistan",
-      address: "Khayaban-e-Amin, Lahore",
-      mapsEmbed: "https://www.google.com/maps?q=Khayaban-e-Amin,+Lahore,+Pakistan&output=embed",
-      mapsLink: "https://maps.google.com/?q=Khayaban-e-Amin,+Lahore,+Pakistan",
-    },
-    {
-      city: "Silicon Valley",
-      country: "USA",
-      address: "Silicon Valley, California",
-      mapsEmbed: "https://www.google.com/maps?q=Silicon+Valley,+California,+USA&output=embed",
-      mapsLink: "https://maps.google.com/?q=Silicon+Valley,+California,+USA",
+      address: "Passion Atelier, Karachi",
+      mapsEmbed: "https://www.google.com/maps?q=Passion+Atelier,+Karachi,+Pakistan&output=embed",
+      mapsLink: "https://share.google/BcuM9OzNGS3GAUZLq",
     },
   ],
   nav: [
@@ -27,7 +20,6 @@ export const SITE = {
     { to: "/services", label: "Services" },
     { to: "/advisor", label: "Fabric Advisor" },
     { to: "/about", label: "About Founder" },
-    { to: "/testimonials", label: "Testimonials" },
     { to: "/contact", label: "Contact" },
   ],
 } as const;
@@ -38,12 +30,19 @@ export interface FrontendVariation {
   description: string;
   price: number;
   original_price: number | null;
+  image_url: string | null;
+  color: {
+    id: number;
+    name: string;
+    hex_code: string;
+  } | null;
 }
 
 export interface FrontendColor {
   id: number;
   name: string;
   hex_code: string;
+  image_url: string | null;
 }
 
 export interface FrontendProduct {
@@ -55,6 +54,7 @@ export interface FrontendProduct {
   featured_image_url: string | null;
   image_key: string | null;
   season: string;
+  in_stock: boolean;
   regular_price: number;
   sale_price: number;
   has_discount: boolean;
