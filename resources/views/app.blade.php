@@ -12,8 +12,8 @@
         <!-- Fonts (non-render-blocking) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Urbanist:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Urbanist:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Epilogue:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Urbanist:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Epilogue:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Urbanist:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 
         <!-- Scripts -->
         @routes

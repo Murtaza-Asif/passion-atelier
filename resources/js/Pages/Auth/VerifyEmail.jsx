@@ -7,7 +7,6 @@ export default function VerifyEmail({ status }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('verification.send'));
     };
 
@@ -15,36 +14,36 @@ export default function VerifyEmail({ status }) {
         <GuestLayout>
             <Head title="Email Verification" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
+            <div className="mb-6">
+                <h1 className="text-2xl font-bold text-[var(--color-foreground)]" style={{ fontFamily: "'Urbanist', sans-serif" }}>
+                    Verify Email
+                </h1>
+                <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
+                    Thanks for signing up! Please verify your email address.
+                </p>
+            </div>
+
+            <div className="mb-5 rounded-xl bg-[var(--color-violet)]/10 px-4 py-3 text-sm text-[var(--color-foreground)]">
+                We've emailed you a verification link. Click it to get started.
             </div>
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                <div className="mb-5 rounded-xl bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-400">
+                    A new verification link has been sent to your email.
                 </div>
             )}
 
             <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>
-                        Resend Verification Email
-                    </PrimaryButton>
-
-                    <Link
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Log Out
-                    </Link>
-                </div>
+                <PrimaryButton className="w-full justify-center" disabled={processing}>
+                    {processing ? 'Sending...' : 'Resend Verification Email'}
+                </PrimaryButton>
             </form>
+
+            <div className="mt-6 text-center">
+                <Link href={route('logout')} method="post" as="button" className="text-sm text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors">
+                    Or sign out
+                </Link>
+            </div>
         </GuestLayout>
     );
 }
